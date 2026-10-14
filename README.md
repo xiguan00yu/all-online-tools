@@ -14,6 +14,7 @@
 - 日期工具：`/all-online-tools/date.html`
 - PDF 工具：`/all-online-tools/pdf.html`
 - JSON 工具：`/all-online-tools/json.html`
+- 3D 模型：`/all-online-tools/model.html`
 
 站点 `base` 为 `/all-online-tools/`（GitHub Pages 项目站点）。
 
@@ -60,6 +61,7 @@ npm run preview
 | [日期工具](./date.html) | 格式化、相对时间（fromNow/toNow）、日期差值 |
 | [PDF 工具](./pdf.html) | 预览、涂抹遮盖、导出 |
 | [JSON 工具](./json.html) | 格式化、校验、结构对比 |
+| [3D 模型](./model.html) | 打开本地 .glb/.gltf、OrbitControls 查看 |
 
 
 ## GitHub Pages 启用步骤
@@ -91,4 +93,5 @@ git config user.email "xiguan00yu@users.noreply.github.com"
 - **@pxlkit/ui-kit**（Pixel* 组件）+ `@pxlkit/core` 与图标 packs
 - Tailwind CSS v4（经 `@pxlkit/ui-kit/styles.css` + `@tailwindcss/vite`）
 - dayjs（日期工具页）
+- three@0.160（3D 模型页：GLTFLoader + OrbitControls）
 - `base: '/all-online-tools/'` 适配 GitHub Pages 项目站点

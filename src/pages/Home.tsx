@@ -6,7 +6,7 @@ import {
   PixelSectionHeader,
 } from '@pxlkit/ui-kit'
 import { PxlKitIcon } from '@pxlkit/core'
-import { Calendar, List, Pencil } from '@pxlkit/ui'
+import { Calendar, List, Package, Pencil } from '@pxlkit/ui'
 
 const tools = [
   {
@@ -32,6 +32,14 @@ const tools = [
     ready: true,
     icon: List,
     iconColor: '#a3e635',
+  },
+  {
+    href: './model.html',
+    title: '3D 模型',
+    description: '打开本地模型、orbit 查看',
+    ready: true,
+    icon: Package,
+    iconColor: '#c4b5fd',
   },
 ]
 
