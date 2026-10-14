@@ -1,3 +1,5 @@
+import { Card, Divider, Footer, Tag, Title } from 'animal-island-ui'
+
 const tools = [
   {
     href: './date.html',
@@ -16,39 +18,62 @@ const tools = [
 export function Home() {
   return (
     <div className="mx-auto min-h-screen max-w-3xl px-4 py-10 sm:px-6">
-      <header className="mb-10 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+      <header className="mb-8 text-center">
+        <Title size="large" color="app-teal" variant="ribbon">
           在线工具集
-        </h1>
-        <p className="mt-2 text-slate-500">
+        </Title>
+        <p className="mt-3 text-slate-500">
           简单实用的浏览器小工具，无需安装
         </p>
+        <div className="mt-3 flex justify-center gap-2">
+          <Tag color="app-blue" variant="soft" size="small">
+            animal-island-ui
+          </Tag>
+          <Tag color="app-green" variant="soft" size="small">
+            React + Vite MPA
+          </Tag>
+        </div>
       </header>
 
-      <ul className="grid gap-4 sm:grid-cols-2">
+      <Divider type="wave-yellow" />
+
+      <ul className="mt-8 grid gap-4 sm:grid-cols-2">
         {tools.map((tool) => (
           <li key={tool.title}>
             {tool.ready ? (
-              <a
-                href={tool.href}
-                className="block rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-sky-300 hover:shadow-md"
-              >
-                <h2 className="text-lg font-semibold text-slate-900">
-                  {tool.title}
-                </h2>
-                <p className="mt-1 text-sm text-slate-500">{tool.description}</p>
+              <a href={tool.href} className="block no-underline">
+                <Card color="app-blue" hoverable>
+                  <div className="flex items-start justify-between gap-2">
+                    <h2 className="text-lg font-semibold text-slate-900">
+                      {tool.title}
+                    </h2>
+                    <Tag color="app-green" variant="solid" size="small">
+                      可用
+                    </Tag>
+                  </div>
+                  <p className="mt-1 text-sm text-slate-600">{tool.description}</p>
+                </Card>
               </a>
             ) : (
-              <div className="block rounded-xl border border-dashed border-slate-200 bg-slate-50/80 p-5 opacity-70">
-                <h2 className="text-lg font-semibold text-slate-600">
-                  {tool.title}
-                </h2>
+              <Card type="dashed" color="default">
+                <div className="flex items-start justify-between gap-2">
+                  <h2 className="text-lg font-semibold text-slate-600">
+                    {tool.title}
+                  </h2>
+                  <Tag color="default" variant="dashed" size="small">
+                    即将推出
+                  </Tag>
+                </div>
                 <p className="mt-1 text-sm text-slate-400">{tool.description}</p>
-              </div>
+              </Card>
             )}
           </li>
         ))}
       </ul>
+
+      <div className="mt-12">
+        <Footer text="All Online Tools" />
+      </div>
     </div>
   )
 }

@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "animal-island-ui": "^2.2.1",
+    "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

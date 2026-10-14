@@ -1,6 +1,8 @@
 # All Online Tools
 
-简单实用的浏览器在线工具集（React + Vite + Tailwind CSS，多页 MPA）。
+简单实用的浏览器在线工具集（**React + Vite + Tailwind CSS** 多页 MPA）。
+
+**UI 库：[`animal-island-ui`](https://guokaigdg.github.io/animal-island-ui/)**（Animal Island UI）。请优先使用该库组件，不要自行发明一套 UI。Agent 说明见 [`AGENTS.md`](./AGENTS.md)。
 
 ## 在线访问
 
@@ -10,6 +12,22 @@
 
 - 首页：`/all-online-tools/`
 - 日期工具：`/all-online-tools/date.html`
+
+站点 `base` 为 `/all-online-tools/`（GitHub Pages 项目站点）。
+
+## UI 库（animal-island-ui）
+
+- 文档：https://guokaigdg.github.io/animal-island-ui/
+- Skill / AI 用法：https://guokaigdg.github.io/animal-island-ui/#/skill
+- 安装：`npm install animal-island-ui classnames`（`classnames` 为 peer）
+- **必须**在组件使用前引入样式（本仓库在 `src/bootstrap.ts`）：
+
+  ```ts
+  import 'animal-island-ui/style'
+  ```
+
+- 从包根导入组件：`import { Button, Card, Title } from 'animal-island-ui'`
+- API：优先读 `node_modules/animal-island-ui/AI_USAGE.md`（若有），否则读 `node_modules/animal-island-ui/dist/types/`
 
 ## 本地开发
 
@@ -51,6 +69,7 @@ npm run preview
 ## 技术栈
 
 - React + TypeScript + Vite（多 HTML 入口 MPA，非 SPA）
+- **animal-island-ui**（UI 组件库）+ peer `classnames`
 - Tailwind CSS v4（`@tailwindcss/vite`）
 - dayjs（日期工具页）
 - `base: '/all-online-tools/'` 适配 GitHub Pages 项目站点

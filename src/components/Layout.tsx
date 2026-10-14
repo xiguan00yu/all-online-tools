@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Button, Divider, Footer, Title } from 'animal-island-ui'
 
 type LayoutProps = {
   title: string
@@ -8,21 +9,26 @@ type LayoutProps = {
 export function Layout({ title, children }: LayoutProps) {
   return (
     <div className="mx-auto min-h-screen max-w-3xl px-4 py-8 sm:px-6">
-      <header className="mb-8 border-b border-slate-200 pb-4">
-        <a
-          href="./index.html"
-          className="text-sm font-medium text-sky-600 hover:text-sky-700"
+      <header className="mb-8">
+        <Button
+          type="link"
+          onClick={() => {
+            window.location.assign('./index.html')
+          }}
         >
           ← 返回首页
-        </a>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          {title}
-        </h1>
+        </Button>
+        <div className="mt-3">
+          <Title size="large" color="app-blue" variant="ribbon">
+            {title}
+          </Title>
+        </div>
+        <Divider type="thin" className="mt-4" />
       </header>
       <main className="space-y-8">{children}</main>
-      <footer className="mt-12 border-t border-slate-200 pt-4 text-center text-xs text-slate-400">
-        All Online Tools
-      </footer>
+      <div className="mt-12">
+        <Footer text="All Online Tools" />
+      </div>
     </div>
   )
 }
