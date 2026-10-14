@@ -55,36 +55,49 @@ export function Home() {
       <PixelDivider label="TOOLS" tone="cyan" spacing="md" />
 
       <ul className="mt-8 grid list-none gap-4 p-0 sm:grid-cols-2">
-        {tools.map((tool) => (
-          <li key={tool.title}>
-            {tool.ready ? (
+        {tools.map((tool) => {
+          // Status labels must not use PixelCard's corner `badge` ribbon:
+          // that path sets overflow-hidden on the card and clips absolute
+          // PixelRibbon text (same issue as DateTools section tags). Keep
+          // 「可用」/「即将推出」in-flow with PixelBadge so they show fully.
+          const statusLabel = tool.ready ? '可用' : '即将推出'
+          const statusTone = tool.ready ? 'green' : 'neutral'
+
+          return (
+            <li key={tool.title}>
               <PixelCard
-                href={tool.href}
-                title={tool.title}
-                description={tool.description}
-                tone="cyan"
-                interactive
-                icon={
-                  <PxlKitIcon
-                    icon={tool.icon}
-                    size={20}
-                    appearance="solid"
-                    color={tool.iconColor}
-                    decorative
-                  />
-                }
-                badge={{ label: '可用', tone: 'green' }}
-              />
-            ) : (
-              <PixelCard
-                title={tool.title}
-                description={tool.description}
-                tone="neutral"
-                badge={{ label: '即将推出', tone: 'neutral' }}
-              />
-            )}
-          </li>
-        ))}
+                href={tool.ready ? tool.href : undefined}
+                tone={tool.ready ? 'cyan' : 'neutral'}
+                interactive={tool.ready || undefined}
+              >
+                <div className="mb-2 flex items-start justify-between gap-3 border-b border-retro-border/30 pb-3">
+                  <div className="flex min-w-0 flex-1 items-center gap-2">
+                    {tool.ready ? (
+                      <PxlKitIcon
+                        icon={tool.icon}
+                        size={20}
+                        appearance="solid"
+                        color={tool.iconColor}
+                        decorative
+                      />
+                    ) : null}
+                    <h4 className="min-w-0 text-sm font-semibold text-retro-text">
+                      {tool.title}
+                    </h4>
+                  </div>
+                  <PixelBadge
+                    tone={statusTone}
+                    size="sm"
+                    className="max-w-[min(100%,14rem)] shrink-0 whitespace-normal break-words text-left leading-snug"
+                  >
+                    {statusLabel}
+                  </PixelBadge>
+                </div>
+                <p className="text-sm text-retro-muted">{tool.description}</p>
+              </PixelCard>
+            </li>
+          )
+        })}
       </ul>
 
       <footer className="mt-12 text-center font-mono text-xs text-retro-muted">
