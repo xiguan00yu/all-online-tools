@@ -66,6 +66,16 @@ npm run preview
 
 也可以把 Source 设为 **GitHub Actions**（若改用 `actions/deploy-pages`）；当前工作流使用 `peaceiris/actions-gh-pages`，因此请选 **gh-pages 分支**。
 
+## Git 提交身份（本仓库）
+
+本仓库提交作者为 **xiguan00yu**（`user.name` / `user.email` 仅设置在本仓库的 **local** git config）。本机其他项目仍保持 Link，请勿改 global。
+
+```bash
+# 仅在本仓库目录执行：
+git config user.name "xiguan00yu"
+git config user.email "xiguan00yu@users.noreply.github.com"
+```
+
 ## 技术栈
 
 - React + TypeScript + Vite（多 HTML 入口 MPA，非 SPA）
