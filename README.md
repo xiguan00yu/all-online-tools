@@ -2,7 +2,7 @@
 
 简单实用的浏览器在线工具集（**React + Vite + Tailwind CSS** 多页 MPA）。
 
-**UI 库：[`animal-island-ui`](https://guokaigdg.github.io/animal-island-ui/)**（Animal Island UI）。请优先使用该库组件，不要自行发明一套 UI。Agent 说明见 [`AGENTS.md`](./AGENTS.md)。
+**UI 库：[`@pxlkit/ui-kit`](https://pxlkit.xyz/)**（Pxlkit — pixel / retro UI）。请优先使用其 `Pixel*` 组件，不要自行发明一套 UI。Agent 说明见 [`AGENTS.md`](./AGENTS.md)。
 
 ## 在线访问
 
@@ -15,23 +15,29 @@
 
 站点 `base` 为 `/all-online-tools/`（GitHub Pages 项目站点）。
 
-## UI 库（animal-island-ui）
+## UI 库（pxlkit）
 
-- 文档：https://guokaigdg.github.io/animal-island-ui/
-- Skill / AI 用法：https://guokaigdg.github.io/animal-island-ui/#/skill
-- 安装：`npm install animal-island-ui classnames`（`classnames` 为 peer）
-- **必须**在组件使用前引入样式（本仓库在 `src/bootstrap.ts`）：
+- 站点 / Docs：https://pxlkit.xyz/ · https://pxlkit.xyz/docs · https://pxlkit.xyz/ui-kit
+- GitHub：https://github.com/joangeldelarosa/pxlkit
+- 安装（本仓库已装）：
 
-  ```ts
-  import 'animal-island-ui/style'
+  ```bash
+  npm install @pxlkit/ui-kit @pxlkit/core @pxlkit/gamification @pxlkit/ui
   ```
 
-- 从包根导入组件：`import { Button, Card, Title } from 'animal-island-ui'`
-- API：优先读 `node_modules/animal-island-ui/AI_USAGE.md`（若有），否则读 `node_modules/animal-island-ui/dist/types/`
+- **必须**用 kit 的 Tailwind v4 入口样式（本仓库在 `src/index.css`），**不要**再单独 `@import "tailwindcss"`：
+
+  ```css
+  @import "@pxlkit/ui-kit/styles.css";
+  ```
+
+- 根节点用 `PxlKitSurfaceProvider`（`surface="pixel"`）包裹，见 `src/components/Providers.tsx`。
+- 从包根导入：`import { PixelButton, PixelCard, PixelInput } from '@pxlkit/ui-kit'`
+- 图标：`import { PxlKitIcon } from '@pxlkit/core'` + 各 pack（如 `@pxlkit/ui`）
 
 ## 本地开发
 
-需要 Node.js 18+（推荐 22）。
+需要 Node.js 18+（推荐 20+；Tailwind 4.3 oxide 声明 `>=20`）。
 
 ```bash
 npm install
@@ -79,7 +85,7 @@ git config user.email "xiguan00yu@users.noreply.github.com"
 ## 技术栈
 
 - React + TypeScript + Vite（多 HTML 入口 MPA，非 SPA）
-- **animal-island-ui**（UI 组件库）+ peer `classnames`
-- Tailwind CSS v4（`@tailwindcss/vite`）
+- **@pxlkit/ui-kit**（Pixel* 组件）+ `@pxlkit/core` 与图标 packs
+- Tailwind CSS v4（经 `@pxlkit/ui-kit/styles.css` + `@tailwindcss/vite`）
 - dayjs（日期工具页）
 - `base: '/all-online-tools/'` 适配 GitHub Pages 项目站点

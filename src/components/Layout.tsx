@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Button, Divider, Footer, Title } from 'animal-island-ui'
+import { PixelButton, PixelDivider, PixelSectionHeader } from '@pxlkit/ui-kit'
 
 type LayoutProps = {
   title: string
@@ -10,25 +10,26 @@ export function Layout({ title, children }: LayoutProps) {
   return (
     <div className="mx-auto min-h-screen max-w-3xl px-4 py-8 sm:px-6">
       <header className="mb-8">
-        <Button
-          type="link"
+        <PixelButton
+          type="button"
+          variant="ghost"
+          tone="cyan"
+          size="sm"
           onClick={() => {
             window.location.assign('./index.html')
           }}
         >
           ← 返回首页
-        </Button>
-        <div className="mt-3">
-          <Title size="large" color="app-blue" variant="ribbon">
-            {title}
-          </Title>
+        </PixelButton>
+        <div className="mt-4">
+          <PixelSectionHeader title={title} titleTone="cyan" size="lg" as="h1" />
         </div>
-        <Divider type="thin" className="mt-4" />
+        <PixelDivider spacing="md" className="mt-2" />
       </header>
       <main className="space-y-8">{children}</main>
-      <div className="mt-12">
-        <Footer text="All Online Tools" />
-      </div>
+      <footer className="mt-12 text-center text-xs text-retro-muted font-mono">
+        All Online Tools · pxlkit
+      </footer>
     </div>
   )
 }

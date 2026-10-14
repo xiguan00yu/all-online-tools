@@ -1,5 +1,13 @@
-@import "tailwindcss";
+/* Pxlkit UI kit stylesheet is a Tailwind CSS v4 entry — do NOT also @import "tailwindcss". */
+@import "@pxlkit/ui-kit/styles.css";
 
-body {
-  @apply min-h-screen bg-slate-50 text-slate-900 antialiased;
+/* Theme the page shell; kit styles components only. */
+@layer base {
+  body {
+    background-color: var(--color-retro-bg);
+    color: var(--color-retro-text);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
 }
