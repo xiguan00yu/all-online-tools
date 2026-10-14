@@ -6,7 +6,7 @@ import {
   PixelSectionHeader,
 } from '@pxlkit/ui-kit'
 import { PxlKitIcon } from '@pxlkit/core'
-import { Calendar } from '@pxlkit/ui'
+import { Calendar, Pencil } from '@pxlkit/ui'
 
 const tools = [
   {
@@ -14,12 +14,16 @@ const tools = [
     title: '日期工具',
     description: '格式化、相对时间、日期差值计算',
     ready: true,
+    icon: Calendar,
+    iconColor: '#22d3ee',
   },
   {
-    href: '#',
-    title: '更多工具',
-    description: '即将推出，敬请期待',
-    ready: false,
+    href: './pdf.html',
+    title: 'PDF 工具',
+    description: '预览、涂抹遮盖、导出',
+    ready: true,
+    icon: Pencil,
+    iconColor: '#f472b6',
   },
 ]
 
@@ -62,10 +66,10 @@ export function Home() {
                 interactive
                 icon={
                   <PxlKitIcon
-                    icon={Calendar}
+                    icon={tool.icon}
                     size={20}
                     appearance="solid"
-                    color="#22d3ee"
+                    color={tool.iconColor}
                     decorative
                   />
                 }

@@ -14,12 +14,16 @@
     "@pxlkit/ui": "^1.2.6",
     "@pxlkit/ui-kit": "^2.2.0",
     "dayjs": "^1.11.13",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^3.11.174",
+    "pica": "^10.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^26.6.5",
+    "@types/pica": "^9.0.5",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",

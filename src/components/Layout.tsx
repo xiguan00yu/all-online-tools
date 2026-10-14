@@ -4,11 +4,17 @@ import { PixelButton, PixelDivider, PixelSectionHeader } from '@pxlkit/ui-kit'
 type LayoutProps = {
   title: string
   children: ReactNode
+  /** Wider max width for tools that need a large canvas (e.g. PDF). */
+  wide?: boolean
 }
 
-export function Layout({ title, children }: LayoutProps) {
+export function Layout({ title, children, wide }: LayoutProps) {
   return (
-    <div className="mx-auto min-h-screen max-w-3xl px-4 py-8 sm:px-6">
+    <div
+      className={`mx-auto min-h-screen px-4 py-8 sm:px-6 ${
+        wide ? 'max-w-5xl' : 'max-w-3xl'
+      }`}
+    >
       <header className="mb-8">
         <PixelButton
           type="button"

@@ -14,7 +14,11 @@ export default defineConfig({
       input: {
         main: resolve(rootDir, 'index.html'),
         date: resolve(rootDir, 'date.html'),
+        pdf: resolve(rootDir, 'pdf.html'),
       },
     },
+  },
+  optimizeDeps: {
+    include: ['pdfjs-dist', 'pdf-lib', 'pica'],
   },
 })
