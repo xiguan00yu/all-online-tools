@@ -61,12 +61,25 @@ function Section({
   tag?: string
   children: ReactNode
 }) {
+  // Long tags (e.g. "dayjs.diff") must not use PixelCard's corner `badge`
+  // ribbon: that path sets overflow-hidden on the card and clips absolute
+  // PixelRibbon labels. Keep the tag in-flow with PixelBadge so it can wrap.
   return (
-    <PixelCard
-      title={title}
-      badge={tag ? { label: tag, tone: 'cyan' } : undefined}
-      tone="neutral"
-    >
+    <PixelCard tone="neutral">
+      <div className="mb-3 flex items-start justify-between gap-3 border-b border-retro-border/30 pb-3">
+        <h4 className="min-w-0 flex-1 text-sm font-semibold text-retro-text">
+          {title}
+        </h4>
+        {tag ? (
+          <PixelBadge
+            tone="cyan"
+            size="sm"
+            className="max-w-[min(100%,14rem)] shrink-0 whitespace-normal break-words text-left leading-snug"
+          >
+            {tag}
+          </PixelBadge>
+        ) : null}
+      </div>
       <div className="space-y-3">{children}</div>
     </PixelCard>
   )
