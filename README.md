@@ -12,6 +12,8 @@
 
 - 首页：`/all-online-tools/`
 - 日期工具：`/all-online-tools/date.html`
+- PDF 工具：`/all-online-tools/pdf.html`
+- JSON 工具：`/all-online-tools/json.html`
 
 站点 `base` 为 `/all-online-tools/`（GitHub Pages 项目站点）。
 
@@ -56,8 +58,9 @@ npm run preview
 | 页面 | 说明 |
 |------|------|
 | [日期工具](./date.html) | 格式化、相对时间（fromNow/toNow）、日期差值 |
+| [PDF 工具](./pdf.html) | 预览、涂抹遮盖、导出 |
+| [JSON 工具](./json.html) | 格式化、校验、结构对比 |
 
-更多工具后续补充。
 
 ## GitHub Pages 启用步骤
 

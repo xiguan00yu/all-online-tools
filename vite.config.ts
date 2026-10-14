@@ -15,6 +15,7 @@ export default defineConfig({
         main: resolve(rootDir, 'index.html'),
         date: resolve(rootDir, 'date.html'),
         pdf: resolve(rootDir, 'pdf.html'),
+        json: resolve(rootDir, 'json.html'),
       },
     },
   },

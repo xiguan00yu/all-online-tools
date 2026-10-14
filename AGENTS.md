@@ -20,12 +20,13 @@
 ## Project shape
 
 - React + TypeScript + Vite **MPA** (multiple HTML entries), not SPA.
-- Entries: `index.html` → `src/main.tsx`, `date.html` → `src/date-main.tsx`, `pdf.html` → `src/pdf-main.tsx`.
+- Entries: `index.html` → `src/main.tsx`, `date.html` → `src/date-main.tsx`, `pdf.html` → `src/pdf-main.tsx`, `json.html` → `src/json-main.tsx`.
 - `vite.config.ts` sets `base: '/all-online-tools/'` for GitHub Pages.
 - Keep the multi-entry Rollup `input` pattern when adding tools: new `*.html` + `src/*-main.tsx` + `src/pages/*`.
 - Tailwind CSS v4 via `@tailwindcss/vite` processes `@pxlkit/ui-kit/styles.css`.
 - Date tools use **dayjs** (format / fromNow / toNow / diff). Keep that behavior.
 - PDF tools use **pdfjs-dist** (preview), **pdf-lib** + **pica** (redact export). Logic lives under `src/components/pdf/`; keep local-only (no upload).
+- JSON tools use native **JSON.parse** / **JSON.stringify** (format / validate) and a small structural diff under `src/components/json/`; keep local-only (no upload).
 
 ## Date / time controls note
 

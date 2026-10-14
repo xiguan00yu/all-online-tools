@@ -6,7 +6,7 @@ import {
   PixelSectionHeader,
 } from '@pxlkit/ui-kit'
 import { PxlKitIcon } from '@pxlkit/core'
-import { Calendar, Pencil } from '@pxlkit/ui'
+import { Calendar, List, Pencil } from '@pxlkit/ui'
 
 const tools = [
   {
@@ -24,6 +24,14 @@ const tools = [
     ready: true,
     icon: Pencil,
     iconColor: '#f472b6',
+  },
+  {
+    href: './json.html',
+    title: 'JSON 工具',
+    description: '格式化、校验、对比',
+    ready: true,
+    icon: List,
+    iconColor: '#a3e635',
   },
 ]
 
