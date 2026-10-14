@@ -17,10 +17,11 @@ export default defineConfig({
         pdf: resolve(rootDir, 'pdf.html'),
         json: resolve(rootDir, 'json.html'),
         model: resolve(rootDir, 'model.html'),
+        face: resolve(rootDir, 'face.html'),
       },
     },
   },
   optimizeDeps: {
-    include: ['pdfjs-dist', 'pdf-lib', 'pica', 'three'],
+    include: ['pdfjs-dist', 'pdf-lib', 'pica', 'three', '@mediapipe/tasks-vision'],
   },
 })

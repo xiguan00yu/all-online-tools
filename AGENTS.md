@@ -20,7 +20,7 @@
 ## Project shape
 
 - React + TypeScript + Vite **MPA** (multiple HTML entries), not SPA.
-- Entries: `index.html` → `src/main.tsx`, `date.html` → `src/date-main.tsx`, `pdf.html` → `src/pdf-main.tsx`, `json.html` → `src/json-main.tsx`, `model.html` → `src/model-main.tsx`.
+- Entries: `index.html` → `src/main.tsx`, `date.html` → `src/date-main.tsx`, `pdf.html` → `src/pdf-main.tsx`, `json.html` → `src/json-main.tsx`, `model.html` → `src/model-main.tsx`, `face.html` → `src/face-main.tsx`.
 - `vite.config.ts` sets `base: '/all-online-tools/'` for GitHub Pages.
 - Keep the multi-entry Rollup `input` pattern when adding tools: new `*.html` + `src/*-main.tsx` + `src/pages/*`.
 - Tailwind CSS v4 via `@tailwindcss/vite` processes `@pxlkit/ui-kit/styles.css`.
@@ -28,6 +28,7 @@
 - PDF tools use **pdfjs-dist** (preview), **pdf-lib** + **pica** (redact export). Logic lives under `src/components/pdf/`; keep local-only (no upload).
 - JSON tools use native **JSON.parse** / **JSON.stringify** (format / validate) and a small structural diff under `src/components/json/`; keep local-only (no upload).
 - Model tools use **three@0.160** (`GLTFLoader` + **OrbitControls**) under `src/components/model/`; local file picker for `.glb`/`.gltf` only (no upload). Prefer self-contained `.glb`.
+- Face tools use **@mediapipe/tasks-vision** Face Landmarker under `src/components/face/`; camera via `getUserMedia` (front/`user`), browser-only overlay modes (bounding box / mesh). WASM + model from Google CDN; stop tracks on unmount.
 
 ## Date / time controls note
 

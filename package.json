@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.1.0",
     "@pxlkit/core": "^1.4.0",
     "@pxlkit/gamification": "^1.2.5",
     "@pxlkit/ui": "^1.2.6",

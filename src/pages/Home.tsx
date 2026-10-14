@@ -7,6 +7,7 @@ import {
 } from '@pxlkit/ui-kit'
 import { PxlKitIcon } from '@pxlkit/core'
 import { Calendar, List, Package, Pencil } from '@pxlkit/ui'
+import { Target } from '@pxlkit/gamification'
 
 const tools = [
   {
@@ -40,6 +41,14 @@ const tools = [
     ready: true,
     icon: Package,
     iconColor: '#c4b5fd',
+  },
+  {
+    href: './face.html',
+    title: '人脸识别',
+    description: '摄像头实时人脸框 / 点线标记',
+    ready: true,
+    icon: Target,
+    iconColor: '#fbbf24',
   },
 ]
 
