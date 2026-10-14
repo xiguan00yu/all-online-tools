@@ -34,3 +34,11 @@
 
 - `PixelDatePicker` is **date-only** (`Date | null`). There is no combined datetime control in pxlkit.
 - For time, use `PixelInput` with `type="time"` (and `step={1}` for seconds). Compose date + time in app state (see `src/pages/DateTools.tsx`).
+
+## i18n (zh / en)
+
+- Lightweight module under `src/i18n/` (no heavy i18n framework): dicts `zh` / `en`, `I18nProvider` + `useI18n().t(path, params?)`.
+- **Default locale**: saved `localStorage` key `all-online-tools.locale` wins; else browser language if it starts with `zh` → `zh`, otherwise `en`.
+- `LanguageSwitcher` (`PixelSegmented`) is mounted once in `Providers` (fixed top-right) so every MPA entry gets it.
+- Switching locale updates `document.documentElement.lang` (`zh-CN` / `en`) and dayjs locale (`zh-cn` / `en`).
+- Cover user-visible strings via `t('…')`; prefer shared keys under `common.*` / per-tool namespaces (`home.*`, `date.*`, …).

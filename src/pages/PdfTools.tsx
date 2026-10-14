@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, type ChangeEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { PixelAlert, PixelBadge, PixelCard } from '@pxlkit/ui-kit'
 import { Layout } from '../components/Layout'
 import { DEFAULT_ZOOM_INDEX, ZOOM_LEVELS } from '../components/pdf/constants'
@@ -11,10 +11,12 @@ import { loadPdfFromBytes, readFileAsUint8Array } from '../components/pdf/loadPd
 import { PdfStage, type PdfStageHandle } from '../components/pdf/PdfStage'
 import { PdfToolbar } from '../components/pdf/PdfToolbar'
 import type { PageState, PreviewMode } from '../components/pdf/types'
+import { useI18n } from '../i18n'
 
 type LoadError = 'engine' | 'load' | 'protected' | 'empty' | null
 
 export function PdfTools() {
+  const { t } = useI18n()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const stageRef = useRef<PdfStageHandle>(null)
   const originalBytesRef = useRef<Uint8Array | null>(null)
@@ -30,6 +32,10 @@ export function PdfTools() {
   const [statusText, setStatusText] = useState<string | null>(null)
   const [loadError, setLoadError] = useState<LoadError>(null)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    document.title = t('pdf.documentTitle')
+  }, [t])
 
   const resetDoc = useCallback(() => {
     setPages(null)
@@ -57,13 +63,13 @@ export function PdfTools() {
       !file.name.toLowerCase().endsWith('.pdf')
     ) {
       setLoadError('load')
-      setStatusText('请选择 PDF 文件')
+      setStatusText(t('pdf.pickPlease'))
       return
     }
     resetDoc()
     setLoading(true)
     setLoadError(null)
-    setStatusText('正在加载…')
+    setStatusText(t('pdf.loadingDoc'))
     try {
       const bytes = await readFileAsUint8Array(file)
       const result = await loadPdfFromBytes(bytes)
@@ -73,7 +79,9 @@ export function PdfTools() {
       setPageTotal(result.pages.length)
       setPageCurrent(1)
       setMarkCount(0)
-      setStatusText(`已加载 ${result.pages.length} 页 · ${file.name}`)
+      setStatusText(
+        t('pdf.loaded', { n: result.pages.length, name: file.name }),
+      )
     } catch (err) {
       const name =
         err && typeof err === 'object' && 'name' in err
@@ -81,13 +89,13 @@ export function PdfTools() {
           : ''
       if (name === 'PasswordException') {
         setLoadError('protected')
-        setStatusText('该 PDF 受密码保护，无法预览')
+        setStatusText(t('pdf.protected'))
       } else if (err instanceof Error && err.message === 'empty') {
         setLoadError('empty')
-        setStatusText('PDF 没有页面')
+        setStatusText(t('pdf.emptyPages'))
       } else {
         setLoadError('load')
-        setStatusText('无法加载该 PDF')
+        setStatusText(t('pdf.cannotLoad'))
       }
     } finally {
       setLoading(false)
@@ -98,7 +106,7 @@ export function PdfTools() {
     const handle = stageRef.current
     if (!handle || !pages || exporting) return
     setExporting(true)
-    setStatusText('正在导出…')
+    setStatusText(t('pdf.exportingStatus'))
     handle.commitLive()
     const result = await exportRedactedPdf(
       handle.getPages(),
@@ -106,10 +114,21 @@ export function PdfTools() {
       (p) => {
         if (p.step.startsWith('export: attempt')) {
           setStatusText(
-            `导出尝试 ${((p.index ?? 0) + 1)}/${3}…`,
+            t('pdf.exportAttempt', {
+              i: (p.index ?? 0) + 1,
+              total: 3,
+            }),
           )
-        } else if (p.step === 'export: page jpeg' || p.step === 'export: page original') {
-          setStatusText(`导出页面 ${p.page}/${p.pages}…`)
+        } else if (
+          p.step === 'export: page jpeg' ||
+          p.step === 'export: page original'
+        ) {
+          setStatusText(
+            t('pdf.exportPage', {
+              page: p.page ?? 0,
+              pages: p.pages ?? 0,
+            }),
+          )
         }
       },
     )
@@ -117,41 +136,36 @@ export function PdfTools() {
     if (result.kind === 'original') {
       const bytes = originalBytesRef.current
       if (!bytes) {
-        setStatusText('没有可导出的文件')
+        setStatusText(t('pdf.noFile'))
         return
       }
-      downloadBytes(
-        bytes,
-        exportFilename(fileNameRef.current, false),
-      )
-      setStatusText('已下载原文件（无涂抹标记）')
+      downloadBytes(bytes, exportFilename(fileNameRef.current, false))
+      setStatusText(t('pdf.downloadedOriginal'))
       return
     }
     if (result.kind === 'pdf') {
-      downloadBytes(
-        result.bytes,
-        exportFilename(fileNameRef.current, true),
-      )
+      downloadBytes(result.bytes, exportFilename(fileNameRef.current, true))
       setStatusText(
-        `已下载涂抹后的 PDF（${(result.bytes.byteLength / 1024 / 1024).toFixed(2)} MB）`,
+        t('pdf.downloadedRedacted', {
+          mb: (result.bytes.byteLength / 1024 / 1024).toFixed(2),
+        }),
       )
       return
     }
     if (result.kind === 'too-large') {
       setStatusText(
-        `导出文件过大（${(result.bytes / 1024 / 1024).toFixed(1)} MB），请减少涂抹页或缩小范围`,
+        t('pdf.tooLarge', {
+          mb: (result.bytes / 1024 / 1024).toFixed(1),
+        }),
       )
       return
     }
-    setStatusText(`导出失败：${result.message}`)
+    setStatusText(t('pdf.exportFailed', { message: result.message }))
   }
 
   return (
-    <Layout title="PDF 工具" wide>
-      <p className="text-sm text-retro-muted">
-        本地预览、涂抹遮盖敏感内容、导出新 PDF。全部在浏览器完成，不会上传。涂抹页会栅格化为
-        JPEG（pica 缩放）；未标记页尽量保留原 PDF 矢量内容。
-      </p>
+    <Layout title={t('pdf.title')} wide>
+      <p className="text-sm text-retro-muted">{t('pdf.intro')}</p>
 
       <input
         ref={fileInputRef}
@@ -202,14 +216,16 @@ export function PdfTools() {
       {loadError ? (
         <PixelAlert
           tone="red"
-          label="加载失败"
-          message={statusText ?? '无法打开 PDF'}
+          label={t('common.loadFailed')}
+          message={statusText ?? t('pdf.cannotOpen')}
         />
       ) : null}
 
       {loading ? (
         <PixelCard tone="cyan" padding="sm">
-          <p className="font-mono text-sm text-retro-muted">加载中…</p>
+          <p className="font-mono text-sm text-retro-muted">
+            {t('common.loading')}
+          </p>
         </PixelCard>
       ) : null}
 
@@ -217,11 +233,11 @@ export function PdfTools() {
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <PixelBadge tone="cyan" size="sm">
-              {mode === 'draw' ? '涂抹模式 · 手指/鼠标拖曳遮盖' : '浏览模式 · 可缩放滚动'}
+              {mode === 'draw' ? t('pdf.modeDraw') : t('pdf.modeBrowse')}
             </PixelBadge>
             {mode === 'draw' ? (
               <PixelBadge tone="pink" size="sm">
-                页面滚动已锁定，用上/下页切换
+                {t('pdf.drawLocked')}
               </PixelBadge>
             ) : null}
           </div>
@@ -242,7 +258,7 @@ export function PdfTools() {
         !loading && (
           <PixelCard tone="neutral" padding="md">
             <p className="text-center text-sm text-retro-muted">
-              选择一个 PDF 开始预览。支持手机触控涂抹。
+              {t('pdf.empty')}
             </p>
           </PixelCard>
         )

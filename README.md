@@ -1,6 +1,6 @@
 # All Online Tools
 
-简单实用的浏览器在线工具集（**React + Vite + Tailwind CSS** 多页 MPA）。
+简单实用的浏览器在线工具集（**React + Vite + Tailwind CSS** 多页 MPA）。支持 **中文 / English**（右上角切换，localStorage 记忆）。
 
 **UI 库：[`@pxlkit/ui-kit`](https://pxlkit.xyz/)**（Pxlkit — pixel / retro UI）。请优先使用其 `Pixel*` 组件，不要自行发明一套 UI。Agent 说明见 [`AGENTS.md`](./AGENTS.md)。
 

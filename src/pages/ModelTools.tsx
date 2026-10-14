@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, type ChangeEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react'
 import * as THREE from 'three'
 import {
   PixelAlert,
@@ -10,17 +10,30 @@ import { Layout } from '../components/Layout'
 import { ModelStage } from '../components/model/ModelStage'
 import {
   formatBytes,
+  isLargeModelFile,
   isModelFile,
-  largeFileWarning,
   loadGltfFromFile,
 } from '../components/model/loadGltf'
+import { useI18n, type TranslateFn } from '../i18n'
 
 type Status = {
   kind: 'idle' | 'loading' | 'ready' | 'error' | 'warn'
   text: string
 }
 
+function loadErrorMessage(
+  result: Extract<Awaited<ReturnType<typeof loadGltfFromFile>>, { ok: false }>,
+  t: TranslateFn,
+): string {
+  if (result.code === 'invalid_type') return t('model.pickPlease')
+  const detail = result.detail ?? t('model.unknownError')
+  let message = t('model.cannotLoad', { detail })
+  if (result.isGltf) message += t('model.gltfHint')
+  return message
+}
+
 export function ModelTools() {
+  const { t } = useI18n()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const objectUrlRef = useRef<string | null>(null)
 
@@ -31,9 +44,20 @@ export function ModelTools() {
   )
   const [status, setStatus] = useState<Status>({
     kind: 'idle',
-    text: '选择本地 .glb / .gltf 开始查看',
+    text: '',
   })
   const [warn, setWarn] = useState<string | null>(null)
+
+  useEffect(() => {
+    document.title = t('model.documentTitle')
+  }, [t])
+
+  // Keep idle / empty status strings in sync with locale.
+  useEffect(() => {
+    setStatus((prev) =>
+      prev.kind === 'idle' ? { kind: 'idle', text: t('model.idle') } : prev,
+    )
+  }, [t])
 
   const clearLoaded = useCallback(() => {
     setModel(null)
@@ -58,14 +82,18 @@ export function ModelTools() {
       setWarn(null)
       setStatus({
         kind: 'error',
-        text: '请选择 .glb 或 .gltf 文件（推荐自包含的 .glb）',
+        text: t('model.badType'),
       })
       return
     }
 
     clearLoaded()
-    setWarn(largeFileWarning(file))
-    setStatus({ kind: 'loading', text: `正在加载 ${file.name}…` })
+    setWarn(
+      isLargeModelFile(file)
+        ? t('model.largeWarn', { size: formatBytes(file.size) })
+        : null,
+    )
+    setStatus({ kind: 'loading', text: t('model.loading', { name: file.name }) })
     setFileMeta({ name: file.name, size: file.size })
 
     const result = await loadGltfFromFile(file)
@@ -75,7 +103,7 @@ export function ModelTools() {
 
     if (!result.ok) {
       setModel(null)
-      setStatus({ kind: 'error', text: result.message })
+      setStatus({ kind: 'error', text: loadErrorMessage(result, t) })
       return
     }
 
@@ -83,7 +111,10 @@ export function ModelTools() {
     setFitKey((k) => k + 1)
     setStatus({
       kind: 'ready',
-      text: `已加载 ${file.name}（${formatBytes(file.size)}）· 拖曳旋转 · 滚轮/双指缩放`,
+      text: t('model.ready', {
+        name: file.name,
+        size: formatBytes(file.size),
+      }),
     })
   }
 
@@ -93,8 +124,8 @@ export function ModelTools() {
     setStatus({
       kind: 'ready',
       text: fileMeta
-        ? `已重置视角 · ${fileMeta.name}`
-        : '已重置视角',
+        ? t('model.resetDone', { name: fileMeta.name })
+        : t('model.resetDoneNoName'),
     })
   }
 
@@ -103,18 +134,18 @@ export function ModelTools() {
     setWarn(null)
     setStatus({
       kind: 'idle',
-      text: '选择本地 .glb / .gltf 开始查看',
+      text: t('model.idle'),
     })
   }
 
   return (
-    <Layout title="3D 模型" wide>
+    <Layout title={t('model.title')} wide>
       <p className="text-sm text-retro-muted">
-        打开本地 glTF / GLB，在浏览器里 orbit 查看。全部本地完成，不会上传。推荐{' '}
+        {t('model.introLead')}{' '}
         <PixelBadge tone="cyan" size="sm">
           .glb
         </PixelBadge>{' '}
-        （自包含）；纯 .gltf 若依赖同目录 .bin / 贴图将无法从单文件加载。
+        {t('model.introTail')}
       </p>
 
       <input
@@ -130,7 +161,7 @@ export function ModelTools() {
       <PixelCard tone="neutral">
         <div className="mb-3 flex items-start justify-between gap-3 border-b border-retro-border/30 pb-3">
           <h4 className="min-w-0 flex-1 text-sm font-semibold text-retro-text">
-            模型查看器
+            {t('model.viewer')}
           </h4>
           <PixelBadge
             tone="cyan"
@@ -149,7 +180,7 @@ export function ModelTools() {
             loading={status.kind === 'loading'}
             onClick={handlePickFile}
           >
-            打开模型
+            {t('model.open')}
           </PixelButton>
           <PixelButton
             type="button"
@@ -159,7 +190,7 @@ export function ModelTools() {
             disabled={!model || status.kind === 'loading'}
             onClick={handleResetView}
           >
-            重置视角
+            {t('model.resetView')}
           </PixelButton>
           <PixelButton
             type="button"
@@ -169,7 +200,7 @@ export function ModelTools() {
             disabled={!model && status.kind !== 'error'}
             onClick={handleClear}
           >
-            清除
+            {t('model.clear')}
           </PixelButton>
         </div>
 
@@ -184,22 +215,32 @@ export function ModelTools() {
           </div>
         ) : null}
 
-        <p className="mt-3 font-mono text-xs text-retro-muted">{status.text}</p>
+        <p className="mt-3 font-mono text-xs text-retro-muted">
+          {status.text || t('model.idle')}
+        </p>
       </PixelCard>
 
       {warn ? (
-        <PixelAlert tone="gold" label="大文件提醒" message={warn} />
+        <PixelAlert
+          tone="gold"
+          label={t('model.largeWarnLabel')}
+          message={warn}
+        />
       ) : null}
 
       {status.kind === 'error' ? (
-        <PixelAlert tone="red" label="加载失败" message={status.text} />
+        <PixelAlert
+          tone="red"
+          label={t('model.loadFailed')}
+          message={status.text}
+        />
       ) : null}
 
       {model ? (
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <PixelBadge tone="cyan" size="sm">
-              拖曳旋转 · 滚轮/双指缩放 · 右键/双指平移
+              {t('model.controls')}
             </PixelBadge>
           </div>
           <ModelStage model={model} fitKey={fitKey} />
@@ -208,7 +249,7 @@ export function ModelTools() {
         status.kind !== 'loading' && (
           <PixelCard tone="neutral" padding="md">
             <p className="text-center text-sm text-retro-muted">
-              选择一个 .glb / .gltf 开始预览。手机上可用单指旋转、双指缩放。
+              {t('model.empty')}
             </p>
           </PixelCard>
         )

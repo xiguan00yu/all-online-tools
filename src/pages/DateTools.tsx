@@ -1,8 +1,9 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import 'dayjs/locale/zh-cn'
+import 'dayjs/locale/en'
 import {
   PixelBadge,
   PixelCard,
@@ -13,19 +14,21 @@ import {
   PixelSelect,
 } from '@pxlkit/ui-kit'
 import { Layout } from '../components/Layout'
+import { useI18n, type TranslateFn } from '../i18n'
 
 dayjs.extend(relativeTime)
 dayjs.extend(duration)
-dayjs.locale('zh-cn')
 
-const FORMAT_PRESETS = [
-  { value: 'YYYY-MM-DD HH:mm:ss', label: 'YYYY-MM-DD HH:mm:ss' },
-  { value: 'YYYY/MM/DD', label: 'YYYY/MM/DD' },
-  { value: 'YYYY年MM月DD日', label: 'YYYY年MM月DD日' },
-  { value: 'YYYY-MM-DDTHH:mm:ssZ', label: 'ISO 8601' },
-  { value: 'X', label: 'Unix 秒' },
-  { value: 'x', label: 'Unix 毫秒' },
-]
+function formatPresets(t: TranslateFn) {
+  return [
+    { value: 'YYYY-MM-DD HH:mm:ss', label: 'YYYY-MM-DD HH:mm:ss' },
+    { value: 'YYYY/MM/DD', label: 'YYYY/MM/DD' },
+    { value: 'YYYY年MM月DD日', label: 'YYYY年MM月DD日' },
+    { value: 'YYYY-MM-DDTHH:mm:ssZ', label: 'ISO 8601' },
+    { value: 'X', label: t('date.format.unixSec') },
+    { value: 'x', label: t('date.format.unixMs') },
+  ]
+}
 
 /** Split / join helpers: PixelDatePicker is date-only; time uses PixelInput type=time. */
 function splitDatetime(value: string): { date: Date; time: string } {
@@ -89,14 +92,15 @@ function Section({
 function DatetimeFields({
   value,
   onChange,
-  dateLabel = '日期',
-  timeLabel = '时间',
+  dateLabel,
+  timeLabel,
 }: {
   value: string
   onChange: (next: string) => void
-  dateLabel?: string
-  timeLabel?: string
+  dateLabel: string
+  timeLabel: string
 }) {
+  const { t } = useI18n()
   const { date, time } = splitDatetime(value)
   return (
     <div className="grid gap-3 sm:grid-cols-2">
@@ -108,7 +112,7 @@ function DatetimeFields({
         }}
         clearable={false}
         format={(d) => dayjs(d).format('YYYY-MM-DD')}
-        presets={[{ label: '今天', value: dayjs().startOf('day').toDate() }]}
+        presets={[{ label: t('date.today'), value: dayjs().startOf('day').toDate() }]}
       />
       <PixelInput
         type="time"
@@ -125,43 +129,52 @@ function DatetimeFields({
 }
 
 function FormatTool() {
+  const { t } = useI18n()
+  const presets = useMemo(() => formatPresets(t), [t])
   const [datetime, setDatetime] = useState(() =>
     dayjs().format('YYYY-MM-DDTHH:mm:ss'),
   )
-  const [preset, setPreset] = useState(FORMAT_PRESETS[0].value)
+  const [preset, setPreset] = useState(presets[0].value)
   const [customFormat, setCustomFormat] = useState('')
   const format = customFormat.trim() || preset
 
   const output = useMemo(() => {
     const d = dayjs(datetime)
-    if (!d.isValid()) return '无效日期'
+    if (!d.isValid()) return t('date.invalidDate')
     return d.format(format)
-  }, [datetime, format])
+  }, [datetime, format, t])
 
   return (
-    <Section title="格式化 Format" tag="dayjs.format">
-      <DatetimeFields value={datetime} onChange={setDatetime} />
+    <Section title={t('date.format.title')} tag="dayjs.format">
+      <DatetimeFields
+        value={datetime}
+        onChange={setDatetime}
+        dateLabel={t('date.date')}
+        timeLabel={t('date.time')}
+      />
       <PixelSelect
-        label="格式预设"
-        options={FORMAT_PRESETS}
+        label={t('date.format.preset')}
+        options={presets}
         value={preset}
         onChange={(key) => {
           setPreset(key)
           setCustomFormat('')
         }}
-        placeholder="选择格式"
+        placeholder={t('date.format.presetPlaceholder')}
       />
       <PixelInput
         type="text"
-        label="自定义格式（可选，覆盖预设）"
-        placeholder="例如 YYYY-MM-DD HH:mm"
+        label={t('date.format.custom')}
+        placeholder={t('date.format.customPlaceholder')}
         value={customFormat}
         onChange={(e) => setCustomFormat(e.target.value)}
         clearable
         onClear={() => setCustomFormat('')}
       />
       <div>
-        <p className="mb-1 text-xs font-mono text-retro-muted">输出</p>
+        <p className="mb-1 text-xs font-mono text-retro-muted">
+          {t('common.output')}
+        </p>
         <ResultBox>{output}</ResultBox>
       </div>
     </Section>
@@ -169,36 +182,42 @@ function FormatTool() {
 }
 
 function FromNowTool() {
+  const { t, locale } = useI18n()
   const [datetime, setDatetime] = useState(() =>
     dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm:ss'),
   )
 
   const fromNow = useMemo(() => {
     const d = dayjs(datetime)
-    if (!d.isValid()) return '无效日期'
+    if (!d.isValid()) return t('date.invalidDate')
     return d.fromNow()
-  }, [datetime])
+    // locale in deps so relative strings refresh when language changes
+  }, [datetime, t, locale])
 
   const toNow = useMemo(() => {
     const d = dayjs(datetime)
-    if (!d.isValid()) return '无效日期'
+    if (!d.isValid()) return t('date.invalidDate')
     return d.toNow()
-  }, [datetime])
+  }, [datetime, t, locale])
 
   return (
-    <Section title="相对时间 Time from now" tag="fromNow / toNow">
+    <Section title={t('date.relative.title')} tag="fromNow / toNow">
       <DatetimeFields
         value={datetime}
         onChange={setDatetime}
-        dateLabel="目标日期"
-        timeLabel="目标时间"
+        dateLabel={t('date.relative.targetDate')}
+        timeLabel={t('date.relative.targetTime')}
       />
       <div>
-        <p className="mb-1 text-xs font-mono text-retro-muted">距现在（fromNow）</p>
+        <p className="mb-1 text-xs font-mono text-retro-muted">
+          {t('date.relative.fromNow')}
+        </p>
         <ResultBox>{fromNow}</ResultBox>
       </div>
       <div>
-        <p className="mb-1 text-xs font-mono text-retro-muted">到现在（toNow）</p>
+        <p className="mb-1 text-xs font-mono text-retro-muted">
+          {t('date.relative.toNow')}
+        </p>
         <ResultBox>{toNow}</ResultBox>
       </div>
     </Section>
@@ -206,6 +225,7 @@ function FromNowTool() {
 }
 
 function DiffTool() {
+  const { t, locale } = useI18n()
   const [start, setStart] = useState(() =>
     dayjs().subtract(2, 'day').format('YYYY-MM-DDTHH:mm:ss'),
   )
@@ -217,7 +237,7 @@ function DiffTool() {
     const a = dayjs(start)
     const b = dayjs(end)
     if (!a.isValid() || !b.isValid()) {
-      return { ok: false as const, message: '无效日期' }
+      return { ok: false as const, message: t('date.invalidDate') }
     }
     const ms = b.diff(a)
     const abs = Math.abs(ms)
@@ -231,28 +251,32 @@ function DiffTool() {
       seconds: `${sign}${b.diff(a, 'second')}`,
       humanized: `${sign}${dur.humanize()}`,
     }
-  }, [start, end])
+  }, [start, end, t, locale])
 
   return (
-    <Section title="日期差值 Difference" tag="dayjs.diff">
+    <Section title={t('date.diff.title')} tag="dayjs.diff">
       <div className="space-y-4">
         <div>
-          <p className="mb-2 text-xs font-mono text-retro-muted">开始</p>
+          <p className="mb-2 text-xs font-mono text-retro-muted">
+            {t('date.diff.start')}
+          </p>
           <DatetimeFields
             value={start}
             onChange={setStart}
-            dateLabel="开始日期"
-            timeLabel="开始时间"
+            dateLabel={t('date.diff.startDate')}
+            timeLabel={t('date.diff.startTime')}
           />
         </div>
         <PixelDivider spacing="sm" />
         <div>
-          <p className="mb-2 text-xs font-mono text-retro-muted">结束</p>
+          <p className="mb-2 text-xs font-mono text-retro-muted">
+            {t('date.diff.end')}
+          </p>
           <DatetimeFields
             value={end}
             onChange={setEnd}
-            dateLabel="结束日期"
-            timeLabel="结束时间"
+            dateLabel={t('date.diff.endDate')}
+            timeLabel={t('date.diff.endTime')}
           />
         </div>
       </div>
@@ -261,23 +285,37 @@ function DiffTool() {
       ) : (
         <div className="grid gap-2 sm:grid-cols-2">
           <div>
-            <p className="mb-1 text-xs font-mono text-retro-muted">天数</p>
-            <ResultBox>{diff.days} 天</ResultBox>
+            <p className="mb-1 text-xs font-mono text-retro-muted">
+              {t('date.diff.days')}
+            </p>
+            <ResultBox>{t('date.diff.dayUnit', { n: diff.days })}</ResultBox>
           </div>
           <div>
-            <p className="mb-1 text-xs font-mono text-retro-muted">小时</p>
-            <ResultBox>{diff.hours} 小时</ResultBox>
+            <p className="mb-1 text-xs font-mono text-retro-muted">
+              {t('date.diff.hours')}
+            </p>
+            <ResultBox>{t('date.diff.hourUnit', { n: diff.hours })}</ResultBox>
           </div>
           <div>
-            <p className="mb-1 text-xs font-mono text-retro-muted">分钟</p>
-            <ResultBox>{diff.minutes} 分钟</ResultBox>
+            <p className="mb-1 text-xs font-mono text-retro-muted">
+              {t('date.diff.minutes')}
+            </p>
+            <ResultBox>
+              {t('date.diff.minuteUnit', { n: diff.minutes })}
+            </ResultBox>
           </div>
           <div>
-            <p className="mb-1 text-xs font-mono text-retro-muted">秒</p>
-            <ResultBox>{diff.seconds} 秒</ResultBox>
+            <p className="mb-1 text-xs font-mono text-retro-muted">
+              {t('date.diff.seconds')}
+            </p>
+            <ResultBox>
+              {t('date.diff.secondUnit', { n: diff.seconds })}
+            </ResultBox>
           </div>
           <div className="sm:col-span-2">
-            <p className="mb-1 text-xs font-mono text-retro-muted">人性化</p>
+            <p className="mb-1 text-xs font-mono text-retro-muted">
+              {t('date.diff.humanized')}
+            </p>
             <ResultBox>{diff.humanized}</ResultBox>
           </div>
         </div>
@@ -287,18 +325,24 @@ function DiffTool() {
 }
 
 export function DateTools() {
+  const { t } = useI18n()
+
+  useEffect(() => {
+    document.title = t('date.documentTitle')
+  }, [t])
+
   return (
-    <Layout title="日期工具">
+    <Layout title={t('date.title')}>
       <p className="text-sm text-retro-muted">
-        基于 dayjs：格式化、相对时间、日期差值。所有计算在浏览器本地完成。日期用{' '}
+        {t('date.introLead')}{' '}
         <PixelBadge tone="cyan" size="sm">
           PixelDatePicker
         </PixelBadge>
-        ，时间用{' '}
+        {t('date.introMid')}{' '}
         <PixelBadge tone="cyan" size="sm">
           PixelInput type=&quot;time&quot;
-        </PixelBadge>
-        （pxlkit 无合并的 datetime 控件）。
+        </PixelBadge>{' '}
+        {t('date.introTail')}
       </p>
       <FormatTool />
       <FromNowTool />

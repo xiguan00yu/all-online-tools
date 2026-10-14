@@ -1,6 +1,7 @@
 import { PixelBadge, PixelButton } from '@pxlkit/ui-kit'
 import { PxlKitIcon } from '@pxlkit/core'
 import { Download, Eraser, Pencil, Undo, Upload } from '@pxlkit/ui'
+import { useI18n } from '../../i18n'
 import type { PreviewMode } from './types'
 import { ZOOM_LEVELS } from './constants'
 
@@ -43,6 +44,7 @@ export function PdfToolbar({
   onZoomOut,
   onExport,
 }: PdfToolbarProps) {
+  const { t } = useI18n()
   const zoomLabel = `${Math.round((ZOOM_LEVELS[zoomIndex] ?? 1) * 100)}%`
   const canZoomOut = zoomIndex > 0 && mode === 'browse' && !exporting
   const canZoomIn =
@@ -67,7 +69,7 @@ export function PdfToolbar({
             />
           }
         >
-          选择 PDF
+          {t('pdf.pickPdf')}
         </PixelButton>
         {hasDoc ? (
           <>
@@ -79,7 +81,7 @@ export function PdfToolbar({
               disabled={exporting}
               onClick={() => onModeChange('browse')}
             >
-              浏览
+              {t('pdf.browse')}
             </PixelButton>
             <PixelButton
               type="button"
@@ -98,7 +100,7 @@ export function PdfToolbar({
                 />
               }
             >
-              涂抹
+              {t('pdf.draw')}
             </PixelButton>
             <PixelButton
               type="button"
@@ -117,7 +119,7 @@ export function PdfToolbar({
                 />
               }
             >
-              撤销
+              {t('pdf.undo')}
             </PixelButton>
             <PixelButton
               type="button"
@@ -136,7 +138,7 @@ export function PdfToolbar({
                 />
               }
             >
-              清空本页
+              {t('pdf.clearPage')}
             </PixelButton>
             <PixelButton
               type="button"
@@ -154,7 +156,7 @@ export function PdfToolbar({
                 />
               }
             >
-              {exporting ? '导出中…' : '导出 PDF'}
+              {exporting ? t('pdf.exporting') : t('pdf.exportPdf')}
             </PixelButton>
           </>
         ) : null}
@@ -171,7 +173,7 @@ export function PdfToolbar({
               disabled={pageCurrent <= 1 || exporting}
               onClick={onPrevPage}
             >
-              ← 上页
+              {t('pdf.prevPage')}
             </PixelButton>
             <PixelBadge tone="cyan" size="sm">
               {pageCurrent} / {pageTotal}
@@ -184,7 +186,7 @@ export function PdfToolbar({
               disabled={pageCurrent >= pageTotal || exporting}
               onClick={onNextPage}
             >
-              下页 →
+              {t('pdf.nextPage')}
             </PixelButton>
           </div>
           <div className="flex items-center gap-2">
@@ -212,7 +214,7 @@ export function PdfToolbar({
               +
             </PixelButton>
             <PixelBadge tone={markCount > 0 ? 'pink' : 'neutral'} size="sm">
-              标记 {markCount}
+              {t('pdf.marks', { n: markCount })}
             </PixelBadge>
           </div>
         </div>

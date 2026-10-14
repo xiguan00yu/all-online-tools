@@ -3,7 +3,13 @@ import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 export type LoadGltfResult =
   | { ok: true; gltf: GLTF; objectUrl: string }
-  | { ok: false; message: string; objectUrl?: string }
+  | {
+      ok: false
+      code: 'invalid_type' | 'load_failed'
+      detail?: string
+      isGltf?: boolean
+      objectUrl?: string
+    }
 
 const WARN_BYTES = 64 * 1024 * 1024
 
@@ -18,28 +24,28 @@ export function formatBytes(n: number): string {
   return `${(n / 1024 / 1024).toFixed(1)} MB`
 }
 
-export function largeFileWarning(file: File): string | null {
-  if (file.size >= WARN_BYTES) {
-    return `文件较大（${formatBytes(file.size)}），加载可能占用较多内存，请耐心等待`
-  }
-  return null
+/** True when the file is large enough to warrant a memory warning. */
+export function isLargeModelFile(file: File): boolean {
+  return file.size >= WARN_BYTES
 }
 
 /**
  * Load a local .glb / .gltf via object URL.
  * Self-contained .glb is preferred; .gltf that references sibling .bin/.png
  * will fail because the browser cannot resolve those relative paths from a blob URL.
+ * User-facing copy is translated in ModelTools via `code` / `detail`.
  */
 export function loadGltfFromFile(file: File): Promise<LoadGltfResult> {
   if (!isModelFile(file)) {
     return Promise.resolve({
       ok: false,
-      message: '请选择 .glb 或 .gltf 文件',
+      code: 'invalid_type',
     })
   }
 
   const objectUrl = URL.createObjectURL(file)
   const loader = new GLTFLoader()
+  const isGltf = file.name.toLowerCase().endsWith('.gltf')
 
   return new Promise((resolve) => {
     loader.load(
@@ -54,13 +60,14 @@ export function loadGltfFromFile(file: File): Promise<LoadGltfResult> {
             ? err.message
             : typeof err === 'string'
               ? err
-              : '未知错误'
-        let message = `无法加载模型：${detail}`
-        if (file.name.toLowerCase().endsWith('.gltf')) {
-          message +=
-            '。.gltf 若依赖同目录的 .bin / 贴图，请改用打包好的 .glb，或自行嵌入 buffer。'
-        }
-        resolve({ ok: false, message, objectUrl })
+              : undefined
+        resolve({
+          ok: false,
+          code: 'load_failed',
+          detail,
+          isGltf,
+          objectUrl,
+        })
       },
     )
   })

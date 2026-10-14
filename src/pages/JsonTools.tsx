@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import {
   PixelAlert,
   PixelBadge,
@@ -20,6 +20,7 @@ import {
   minifyJson,
   parseJson,
 } from '../components/json/parseJson'
+import { useI18n, type TranslateFn } from '../i18n'
 
 const SAMPLE_A = `{
   "name": "all-online-tools",
@@ -44,8 +45,6 @@ function Section({
   tag?: string
   children: ReactNode
 }) {
-  // Same rule as DateTools / Home: keep status tags in-flow with PixelBadge.
-  // PixelCard corner `badge` sets overflow-hidden and clips PixelRibbon text.
   return (
     <PixelCard tone="neutral">
       <div className="mb-3 flex items-start justify-between gap-3 border-b border-retro-border/30 pb-3">
@@ -77,7 +76,21 @@ function ResultBox({ children }: { children: ReactNode }) {
   )
 }
 
+function describeType(value: unknown, t: TranslateFn): string {
+  if (value === null) return 'null'
+  if (Array.isArray(value)) {
+    return t('json.validate.arrayItems', { n: value.length })
+  }
+  if (typeof value === 'object') {
+    return t('json.validate.objectKeys', {
+      n: Object.keys(value as object).length,
+    })
+  }
+  return typeof value
+}
+
 function FormatTool() {
+  const { t } = useI18n()
   const [input, setInput] = useState(SAMPLE_A)
   const [output, setOutput] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -85,7 +98,7 @@ function FormatTool() {
   const run = (mode: 'pretty' | 'minify') => {
     const parsed = parseJson(input)
     if (!parsed.ok) {
-      setError(formatParseError(parsed.error))
+      setError(formatParseError(parsed.error, t))
       setOutput('')
       return
     }
@@ -94,9 +107,9 @@ function FormatTool() {
   }
 
   return (
-    <Section title="格式化 Format" tag="JSON.stringify">
+    <Section title={t('json.format.title')} tag="JSON.stringify">
       <PixelTextarea
-        label="JSON 输入"
+        label={t('json.input')}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         rows={10}
@@ -112,7 +125,7 @@ function FormatTool() {
           size="sm"
           onClick={() => run('pretty')}
         >
-          美化（缩进）
+          {t('json.format.pretty')}
         </PixelButton>
         <PixelButton
           type="button"
@@ -121,7 +134,7 @@ function FormatTool() {
           size="sm"
           onClick={() => run('minify')}
         >
-          压缩 Minify
+          {t('json.format.minify')}
         </PixelButton>
         <PixelButton
           type="button"
@@ -134,7 +147,7 @@ function FormatTool() {
             setError(null)
           }}
         >
-          填入示例
+          {t('json.format.sample')}
         </PixelButton>
         {output ? (
           <PixelButton
@@ -146,16 +159,22 @@ function FormatTool() {
               void navigator.clipboard?.writeText(output)
             }}
           >
-            复制结果
+            {t('json.format.copy')}
           </PixelButton>
         ) : null}
       </div>
       {error ? (
-        <PixelAlert tone="red" label="无法格式化" message={error} />
+        <PixelAlert
+          tone="red"
+          label={t('json.format.cannotFormat')}
+          message={error}
+        />
       ) : null}
       {output ? (
         <div>
-          <p className="mb-1 text-xs font-mono text-retro-muted">输出</p>
+          <p className="mb-1 text-xs font-mono text-retro-muted">
+            {t('json.output')}
+          </p>
           <ResultBox>{output}</ResultBox>
         </div>
       ) : null}
@@ -164,20 +183,21 @@ function FormatTool() {
 }
 
 function ValidateTool() {
+  const { t } = useI18n()
   const [input, setInput] = useState(SAMPLE_A)
   const result = useMemo(() => parseJson(input), [input])
 
   return (
-    <Section title="校验 Validate" tag="JSON.parse">
+    <Section title={t('json.validate.title')} tag="JSON.parse">
       <PixelTextarea
-        label="JSON 输入"
+        label={t('json.input')}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         rows={8}
         tone="cyan"
         spellCheck={false}
         className="font-mono text-xs"
-        placeholder="粘贴要校验的 JSON"
+        placeholder={t('json.validate.placeholder')}
       />
       <div className="flex flex-wrap gap-2">
         <PixelButton
@@ -187,7 +207,7 @@ function ValidateTool() {
           size="sm"
           onClick={() => setInput(SAMPLE_A)}
         >
-          有效示例
+          {t('json.validate.validSample')}
         </PixelButton>
         <PixelButton
           type="button"
@@ -196,36 +216,38 @@ function ValidateTool() {
           size="sm"
           onClick={() => setInput('{"broken": true,}')}
         >
-          无效示例
+          {t('json.validate.invalidSample')}
         </PixelButton>
       </div>
       {result.ok ? (
         <PixelAlert
           tone="green"
-          label="有效 JSON"
-          message={`类型：${describeType(result.value)}`}
+          label={t('json.validate.valid')}
+          message={t('json.validate.type', {
+            type: describeType(result.value, t),
+          })}
         />
       ) : (
         <div className="space-y-2">
           <PixelAlert
             tone="red"
-            label="无效 JSON"
-            message={formatParseError(result.error)}
+            label={t('json.validate.invalid')}
+            message={formatParseError(result.error, t)}
           />
           <div className="flex flex-wrap gap-2">
             {result.error.line != null ? (
               <PixelBadge tone="pink" size="sm">
-                行 {result.error.line}
+                {t('json.validate.line', { n: result.error.line })}
               </PixelBadge>
             ) : null}
             {result.error.column != null ? (
               <PixelBadge tone="pink" size="sm">
-                列 {result.error.column}
+                {t('json.validate.column', { n: result.error.column })}
               </PixelBadge>
             ) : null}
             {result.error.position != null ? (
               <PixelBadge tone="pink" size="sm">
-                位置 {result.error.position}
+                {t('json.validate.position', { n: result.error.position })}
               </PixelBadge>
             ) : null}
           </div>
@@ -235,20 +257,12 @@ function ValidateTool() {
   )
 }
 
-function describeType(value: unknown): string {
-  if (value === null) return 'null'
-  if (Array.isArray(value)) return `array（${value.length} 项）`
-  if (typeof value === 'object') {
-    return `object（${Object.keys(value as object).length} 个键）`
-  }
-  return typeof value
-}
-
 function DiffKindBadge({ kind }: { kind: DiffEntry['kind'] }) {
+  const { t } = useI18n()
   const map = {
-    added: { tone: 'green' as const, label: '新增' },
-    removed: { tone: 'red' as const, label: '删除' },
-    changed: { tone: 'gold' as const, label: '变更' },
+    added: { tone: 'green' as const, label: t('json.diff.added') },
+    removed: { tone: 'red' as const, label: t('json.diff.removed') },
+    changed: { tone: 'gold' as const, label: t('json.diff.changed') },
   }
   const m = map[kind]
   return (
@@ -259,6 +273,7 @@ function DiffKindBadge({ kind }: { kind: DiffEntry['kind'] }) {
 }
 
 function DiffTool() {
+  const { t } = useI18n()
   const [left, setLeft] = useState(SAMPLE_A)
   const [right, setRight] = useState(SAMPLE_B)
 
@@ -268,23 +283,24 @@ function DiffTool() {
     if (!a.ok || !b.ok) {
       return {
         ok: false as const,
-        leftError: a.ok ? undefined : formatParseError(a.error),
-        rightError: b.ok ? undefined : formatParseError(b.error),
+        leftError: a.ok ? undefined : formatParseError(a.error, t),
+        rightError: b.ok ? undefined : formatParseError(b.error, t),
       }
     }
     const entries = diffJsonValues(a.value, b.value)
     return { ok: true as const, entries, identical: entries.length === 0 }
-  }, [left, right])
+  }, [left, right, t])
 
   return (
-    <Section title="对比 Diff" tag="structural">
+    <Section title={t('json.diff.title')} tag="structural">
       <p className="text-xs text-retro-muted">
-        结构对比：对两侧 <PixelCodeInline tone="cyan">JSON.parse</PixelCodeInline>{' '}
-        后的值做深度遍历，按路径标出新增 / 删除 / 变更（非行级文本 diff）。
+        {t('json.diff.blurbLead')}{' '}
+        <PixelCodeInline tone="cyan">JSON.parse</PixelCodeInline>{' '}
+        {t('json.diff.blurbTail')}
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         <PixelTextarea
-          label="左侧（旧）"
+          label={t('json.diff.left')}
           value={left}
           onChange={(e) => setLeft(e.target.value)}
           rows={10}
@@ -293,7 +309,7 @@ function DiffTool() {
           className="font-mono text-xs"
         />
         <PixelTextarea
-          label="右侧（新）"
+          label={t('json.diff.right')}
           value={right}
           onChange={(e) => setRight(e.target.value)}
           rows={10}
@@ -313,7 +329,7 @@ function DiffTool() {
             setRight(SAMPLE_B)
           }}
         >
-          填入对比示例
+          {t('json.diff.fillSample')}
         </PixelButton>
         <PixelButton
           type="button"
@@ -321,30 +337,41 @@ function DiffTool() {
           variant="ghost"
           size="sm"
           onClick={() => {
-            setLeft((v) => v)
             setRight(left)
           }}
         >
-          右侧 ← 左侧
+          {t('json.diff.copyLeftToRight')}
         </PixelButton>
       </div>
 
       {!result.ok ? (
         <div className="space-y-2">
           {result.leftError ? (
-            <PixelAlert tone="red" label="左侧无效" message={result.leftError} />
+            <PixelAlert
+              tone="red"
+              label={t('json.diff.leftInvalid')}
+              message={result.leftError}
+            />
           ) : null}
           {result.rightError ? (
-            <PixelAlert tone="red" label="右侧无效" message={result.rightError} />
+            <PixelAlert
+              tone="red"
+              label={t('json.diff.rightInvalid')}
+              message={result.rightError}
+            />
           ) : null}
         </div>
       ) : result.identical ? (
-        <PixelAlert tone="green" label="无差异" message="两侧 JSON 结构与值完全一致" />
+        <PixelAlert
+          tone="green"
+          label={t('json.diff.identical')}
+          message={t('json.diff.identicalMsg')}
+        />
       ) : (
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <PixelBadge tone="cyan" size="sm">
-              {result.entries.length} 处差异
+              {t('json.diff.diffCount', { n: result.entries.length })}
             </PixelBadge>
           </div>
           <ul className="m-0 list-none space-y-2 p-0">
@@ -382,14 +409,20 @@ function DiffTool() {
 }
 
 export function JsonTools() {
+  const { t } = useI18n()
+
+  useEffect(() => {
+    document.title = t('json.documentTitle')
+  }, [t])
+
   return (
-    <Layout title="JSON 工具">
+    <Layout title={t('json.title')}>
       <p className="text-sm text-retro-muted">
-        格式化、校验、结构对比。全部在浏览器本地完成，使用原生{' '}
+        {t('json.introLead')}{' '}
         <PixelBadge tone="cyan" size="sm">
           JSON.parse / JSON.stringify
         </PixelBadge>
-        ，无上传。
+        {t('json.introTail')}
       </p>
       <FormatTool />
       <PixelDivider spacing="sm" />

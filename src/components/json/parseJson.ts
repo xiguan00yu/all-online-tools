@@ -25,7 +25,7 @@ export function parseJson(text: string): ParseResult {
     return {
       ok: false,
       error: {
-        message: '输入为空',
+        message: 'EMPTY',
         position: null,
         line: null,
         column: null,
@@ -114,15 +114,26 @@ export function minifyJson(value: unknown): string {
   return JSON.stringify(value)
 }
 
-export function formatParseError(error: JsonParseError): string {
-  const parts = [error.message]
+/** Map engine / sentinel messages; pass `t` from i18n when showing to users. */
+export function formatParseError(
+  error: JsonParseError,
+  t?: (path: string, params?: Record<string, string | number>) => string,
+): string {
+  const translate = t ?? ((path: string) => path)
+  let base = error.message
+  if (base === 'EMPTY') base = translate('json.emptyInput')
+  else if (base === 'PARSE_FAILED') base = translate('json.parseFailed')
+
+  const parts = [base]
   if (error.line != null && error.column != null) {
-    parts.push(`行 ${error.line}，列 ${error.column}`)
+    parts.push(
+      translate('json.errLineCol', { line: error.line, column: error.column }),
+    )
   } else if (error.position != null) {
-    parts.push(`位置 ${error.position}`)
+    parts.push(translate('json.errPosition', { n: error.position }))
   }
   if (error.path) {
-    parts.push(`路径 ${error.path}`)
+    parts.push(translate('json.errPath', { path: error.path }))
   }
   return parts.join(' · ')
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   PixelBadge,
   PixelBadgeGroup,
@@ -8,44 +9,40 @@ import {
 import { PxlKitIcon } from '@pxlkit/core'
 import { Calendar, List, Package, Pencil } from '@pxlkit/ui'
 import { Target } from '@pxlkit/gamification'
+import { useI18n } from '../i18n'
 
-const tools = [
+const toolDefs = [
   {
+    id: 'date' as const,
     href: './date.html',
-    title: '日期工具',
-    description: '格式化、相对时间、日期差值计算',
     ready: true,
     icon: Calendar,
     iconColor: '#22d3ee',
   },
   {
+    id: 'pdf' as const,
     href: './pdf.html',
-    title: 'PDF 工具',
-    description: '预览、涂抹遮盖、导出',
     ready: true,
     icon: Pencil,
     iconColor: '#f472b6',
   },
   {
+    id: 'json' as const,
     href: './json.html',
-    title: 'JSON 工具',
-    description: '格式化、校验、对比',
     ready: true,
     icon: List,
     iconColor: '#a3e635',
   },
   {
+    id: 'model' as const,
     href: './model.html',
-    title: '3D 模型',
-    description: '打开本地模型、orbit 查看',
     ready: true,
     icon: Package,
     iconColor: '#c4b5fd',
   },
   {
+    id: 'face' as const,
     href: './face.html',
-    title: '人脸识别',
-    description: '摄像头实时人脸框 / 点线标记',
     ready: true,
     icon: Target,
     iconColor: '#fbbf24',
@@ -53,20 +50,26 @@ const tools = [
 ]
 
 export function Home() {
+  const { t } = useI18n()
+
+  useEffect(() => {
+    document.title = t('home.documentTitle')
+  }, [t])
+
   return (
     <div className="mx-auto min-h-screen max-w-3xl px-4 py-10 sm:px-6">
-      <header className="mb-8 text-center">
+      <header className="mb-8 text-center pr-28 sm:pr-36">
         <PixelSectionHeader
-          eyebrow="ALL ONLINE TOOLS"
-          title="在线工具集"
-          description="简单实用的浏览器小工具，无需安装"
+          eyebrow={t('home.eyebrow')}
+          title={t('home.title')}
+          description={t('home.description')}
           titleTone="cyan"
           align="center"
           size="lg"
           as="h1"
         />
         <div className="mt-4 flex justify-center">
-          <PixelBadgeGroup aria-label="技术栈">
+          <PixelBadgeGroup aria-label={t('common.techStack')}>
             <PixelBadge tone="cyan" size="sm">
               pxlkit
             </PixelBadge>
@@ -77,19 +80,21 @@ export function Home() {
         </div>
       </header>
 
-      <PixelDivider label="TOOLS" tone="cyan" spacing="md" />
+      <PixelDivider label={t('home.toolsDivider')} tone="cyan" spacing="md" />
 
       <ul className="mt-8 grid list-none gap-4 p-0 sm:grid-cols-2">
-        {tools.map((tool) => {
+        {toolDefs.map((tool) => {
           // Status labels must not use PixelCard's corner `badge` ribbon:
           // that path sets overflow-hidden on the card and clips absolute
           // PixelRibbon text (same issue as DateTools section tags). Keep
-          // 「可用」/「即将推出」in-flow with PixelBadge so they show fully.
-          const statusLabel = tool.ready ? '可用' : '即将推出'
+          // ready / coming-soon in-flow with PixelBadge so they show fully.
+          const title = t(`home.tools.${tool.id}.title`)
+          const description = t(`home.tools.${tool.id}.description`)
+          const statusLabel = tool.ready ? t('home.ready') : t('home.comingSoon')
           const statusTone = tool.ready ? 'green' : 'neutral'
 
           return (
-            <li key={tool.title}>
+            <li key={tool.id}>
               <PixelCard
                 href={tool.ready ? tool.href : undefined}
                 tone={tool.ready ? 'cyan' : 'neutral'}
@@ -107,7 +112,7 @@ export function Home() {
                       />
                     ) : null}
                     <h4 className="min-w-0 text-sm font-semibold text-retro-text">
-                      {tool.title}
+                      {title}
                     </h4>
                   </div>
                   <PixelBadge
@@ -118,7 +123,7 @@ export function Home() {
                     {statusLabel}
                   </PixelBadge>
                 </div>
-                <p className="text-sm text-retro-muted">{tool.description}</p>
+                <p className="text-sm text-retro-muted">{description}</p>
               </PixelCard>
             </li>
           )
