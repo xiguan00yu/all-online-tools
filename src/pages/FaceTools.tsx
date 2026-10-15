@@ -5,10 +5,16 @@ import {
   PixelBadge,
   PixelButton,
   PixelCard,
+  PixelCheckbox,
   PixelSegmented,
   PixelSwitch,
 } from '@pxlkit/ui-kit'
 import { Layout } from '../components/Layout'
+import {
+  ACCESSORY_IDS,
+  preloadAccessoryImages,
+  type AccessoryId,
+} from '../components/face/accessories'
 import type { OverlayMode } from '../components/face/constants'
 import { getFaceLandmarker } from '../components/face/createFaceLandmarker'
 import { FaceStage } from '../components/face/FaceStage'
@@ -41,11 +47,21 @@ function cameraStatusText(
   }
 }
 
+const ACCESSORY_LABEL_KEYS: Record<AccessoryId, string> = {
+  'santa-hat': 'face.accSantaHat',
+  sunglasses: 'face.accSunglasses',
+  mustache: 'face.accMustache',
+  'bunny-ears': 'face.accBunnyEars',
+}
+
 export function FaceTools() {
   const { t } = useI18n()
   const camera = useCamera()
   const [mode, setMode] = useState<OverlayMode>('box')
   const [mirror, setMirror] = useState(true)
+  const [accessories, setAccessories] = useState<Set<AccessoryId>>(
+    () => new Set(),
+  )
   const [landmarker, setLandmarker] = useState<FaceLandmarker | null>(null)
   const [modelPhase, setModelPhase] = useState<ModelPhase>('idle')
   const [modelError, setModelError] = useState<string | null>(null)
@@ -62,6 +78,10 @@ export function FaceTools() {
   useEffect(() => {
     document.title = t('face.documentTitle')
   }, [t])
+
+  useEffect(() => {
+    void preloadAccessoryImages()
+  }, [])
 
   const ensureModel = useCallback(async () => {
     if (landmarker && modelPhase === 'ready') return landmarker
@@ -91,6 +111,15 @@ export function FaceTools() {
   const handleStop = () => {
     camera.stop()
     setDetectPhase('idle')
+  }
+
+  const toggleAccessory = (id: AccessoryId, next: boolean) => {
+    setAccessories((prev) => {
+      const copy = new Set(prev)
+      if (next) copy.add(id)
+      else copy.delete(id)
+      return copy
+    })
   }
 
   useEffect(() => {
@@ -194,6 +223,26 @@ export function FaceTools() {
               {mirror ? t('face.mirrored') : t('face.notMirrored')}
             </PixelBadge>
           </div>
+
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-retro-text">
+              {t('face.accessories')}
+            </p>
+            <p className="text-xs text-retro-muted">{t('face.accessoriesHint')}</p>
+            <div className="flex flex-wrap gap-3">
+              {ACCESSORY_IDS.map((id) => (
+                <PixelCheckbox
+                  key={id}
+                  tone="cyan"
+                  label={t(ACCESSORY_LABEL_KEYS[id])}
+                  checked={accessories.has(id)}
+                  onChange={(next) => {
+                    toggleAccessory(id, next)
+                  }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="mt-3 flex flex-wrap gap-2">
@@ -235,6 +284,11 @@ export function FaceTools() {
                   : t('face.detecting')}
             </PixelBadge>
           ) : null}
+          {accessories.size > 0 ? (
+            <PixelBadge tone="gold" size="sm">
+              {t('face.accessoriesOn', { n: String(accessories.size) })}
+            </PixelBadge>
+          ) : null}
         </div>
 
         <p className="mt-3 font-mono text-xs text-retro-muted">
@@ -273,6 +327,8 @@ export function FaceTools() {
         mode={mode}
         mirror={mirror}
         active={detectionActive}
+        accessories={accessories}
+        idleHint={t('face.idleHint')}
         onDetectPhase={setDetectPhase}
       />
 

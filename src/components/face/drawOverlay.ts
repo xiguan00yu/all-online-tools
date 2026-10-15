@@ -4,6 +4,10 @@ import {
   type FaceLandmarkerResult,
   type NormalizedLandmark,
 } from '@mediapipe/tasks-vision'
+import {
+  drawFaceAccessories,
+  type AccessoryId,
+} from './accessories'
 import type { OverlayMode } from './constants'
 
 function landmarksBounds(landmarks: NormalizedLandmark[]) {
@@ -131,6 +135,7 @@ export function drawFaceOverlay(
   mode: OverlayMode,
   width: number,
   height: number,
+  accessories: ReadonlySet<AccessoryId> | readonly AccessoryId[] = [],
 ): boolean {
   ctx.clearRect(0, 0, width, height)
   const faces = result?.faceLandmarks
@@ -144,6 +149,7 @@ export function drawFaceOverlay(
     } else {
       drawMesh(ctx, landmarks)
     }
+    drawFaceAccessories(ctx, landmarks, width, height, accessories)
   }
   return true
 }

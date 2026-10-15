@@ -41,7 +41,7 @@ export const zh: MessageTree = {
       },
       face: {
         title: '人脸识别',
-        description: '摄像头实时人脸框 / 点线标记',
+        description: '摄像头实时人脸框 / 点线 / 趣味配件',
       },
     },
   },
@@ -209,7 +209,7 @@ export const zh: MessageTree = {
     title: '人脸识别',
     introLead: '浏览器本地实时人脸检测：开启前置摄像头后，用 MediaPipe Face Landmarker 在画面上叠加',
     introMid: '或',
-    introTail: '。画面与模型均在本机处理，不会上传。',
+    introTail: '，还可叠加趣味脸部配件。画面与模型均在本机处理，不会上传。',
     badgeBox: '人脸框',
     badgeMesh: '点线标记',
     preview: '实时预览',
@@ -246,6 +246,14 @@ export const zh: MessageTree = {
     modelFailedMsg:
       '无法加载 MediaPipe WASM 或 face_landmarker 模型，请检查网络后重试。',
     modelFailedShort: '模型加载失败（需联网下载 WASM / 模型）',
-    tip: '提示：摄像头需要 HTTPS 或 localhost。首次加载会从 CDN 拉取 WASM 与约 3–4 MB 的模型；之后浏览器可能缓存。关闭本页或点「关闭摄像头」会停止轨道。',
+    tip: '提示：摄像头需要 HTTPS 或 localhost。首次加载会从 CDN 拉取 WASM 与约 3–4 MB 的模型；之后浏览器可能缓存。可多选圣诞帽、墨镜、小胡子、兔耳等配件，它们会跟随人脸移动/缩放/旋转。关闭本页或点「关闭摄像头」会停止轨道。',
+    accessories: '脸部配件',
+    accessoriesHint: '可多选；配件锚定到人脸关键点，与框/网格叠加互不冲突。',
+    accessoriesOn: '配件 · {{n}}',
+    accSantaHat: '圣诞帽',
+    accSunglasses: '墨镜',
+    accMustache: '小胡子',
+    accBunnyEars: '兔耳',
+    idleHint: '点击「开启摄像头」开始实时识别',
   },
 }

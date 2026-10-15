@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FaceLandmarker, FaceLandmarkerResult } from '@mediapipe/tasks-vision'
+import type { AccessoryId } from './accessories'
 import type { OverlayMode } from './constants'
 import { drawFaceOverlay } from './drawOverlay'
 import type { DetectPhase } from './types'
@@ -10,6 +11,8 @@ type FaceStageProps = {
   mode: OverlayMode
   mirror: boolean
   active: boolean
+  accessories: ReadonlySet<AccessoryId>
+  idleHint: string
   onDetectPhase: (phase: DetectPhase) => void
 }
 
@@ -19,16 +22,20 @@ export function FaceStage({
   mode,
   mirror,
   active,
+  accessories,
+  idleHint,
   onDetectPhase,
 }: FaceStageProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const modeRef = useRef(mode)
   const landmarkerRef = useRef(landmarker)
+  const accessoriesRef = useRef(accessories)
   const onDetectPhaseRef = useRef(onDetectPhase)
   const [ready, setReady] = useState(false)
 
   modeRef.current = mode
   landmarkerRef.current = landmarker
+  accessoriesRef.current = accessories
   onDetectPhaseRef.current = onDetectPhase
 
   useEffect(() => {
@@ -93,6 +100,7 @@ export function FaceStage({
             modeRef.current,
             canvas.width,
             canvas.height,
+            accessoriesRef.current,
           )
           onDetectPhaseRef.current(hasFace ? 'running' : 'no-face')
         }
@@ -133,7 +141,7 @@ export function FaceStage({
       </div>
       {!active ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black/60 p-4 text-center text-sm text-retro-muted">
-          点击「开启摄像头」开始实时识别
+          {idleHint}
         </div>
       ) : null}
     </div>

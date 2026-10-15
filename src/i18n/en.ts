@@ -41,7 +41,7 @@ export const en: MessageTree = {
       },
       face: {
         title: 'Face Detection',
-        description: 'Live camera face box / mesh overlay',
+        description: 'Live camera face box / mesh / accessories',
       },
     },
   },
@@ -211,7 +211,7 @@ export const en: MessageTree = {
     title: 'Face Detection',
     introLead: 'On-device live face detection: after starting the front camera, MediaPipe Face Landmarker overlays a',
     introMid: 'or',
-    introTail: '. Video and model stay on-device — nothing is uploaded.',
+    introTail: ', plus fun face accessories. Video and model stay on-device — nothing is uploaded.',
     badgeBox: 'Face box',
     badgeMesh: 'Mesh',
     preview: 'Live preview',
@@ -248,6 +248,14 @@ export const en: MessageTree = {
     modelFailedMsg:
       'Could not load MediaPipe WASM or the face_landmarker model. Check the network and retry.',
     modelFailedShort: 'Model load failed (needs network for WASM / model)',
-    tip: 'Tip: the camera needs HTTPS or localhost. First load pulls WASM and a ~3–4 MB model from a CDN; the browser may cache them. Closing this page or tapping “Stop camera” stops the tracks.',
+    tip: 'Tip: the camera needs HTTPS or localhost. First load pulls WASM and a ~3–4 MB model from a CDN; the browser may cache them. Multi-select Santa hat, sunglasses, mustache, or bunny ears — they track face move/scale/rotate. Closing this page or tapping “Stop camera” stops the tracks.',
+    accessories: 'Face accessories',
+    accessoriesHint: 'Multi-select OK; accessories anchor to face landmarks and work with box/mesh.',
+    accessoriesOn: 'Accessories · {{n}}',
+    accSantaHat: 'Santa hat',
+    accSunglasses: 'Sunglasses',
+    accMustache: 'Mustache',
+    accBunnyEars: 'Bunny ears',
+    idleHint: 'Tap “Start camera” to begin live detection',
   },
 }

@@ -28,7 +28,7 @@
 - PDF tools use **pdfjs-dist** (preview), **pdf-lib** + **pica** (redact export). Logic lives under `src/components/pdf/`; keep local-only (no upload).
 - JSON tools use native **JSON.parse** / **JSON.stringify** (format / validate) and a small structural diff under `src/components/json/`; keep local-only (no upload).
 - Model tools use **three@0.160** (`GLTFLoader` + **OrbitControls**) under `src/components/model/`; local file picker for `.glb`/`.gltf` only (no upload). Prefer self-contained `.glb`.
-- Face tools use **@mediapipe/tasks-vision** Face Landmarker under `src/components/face/`; camera via `getUserMedia` (front/`user`), browser-only overlay modes (bounding box / mesh). WASM + model from Google CDN; stop tracks on unmount.
+- Face tools use **@mediapipe/tasks-vision** Face Landmarker under `src/components/face/`; camera via `getUserMedia` (front/`user`), browser-only overlay modes (bounding box / mesh) plus comic 2D face accessories (SVG under `src/assets/face-accessories/`). WASM + model from Google CDN; stop tracks on unmount.
 
 ## Date / time controls note
 

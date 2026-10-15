@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80" fill="none">
+  <!-- Comic handlebar mustache -->
+  <path d="M100 42
+    C88 18 58 14 38 28
+    C22 38 18 52 28 58
+    C38 64 52 52 62 46
+    C72 40 86 44 100 52
+    C114 44 128 40 138 46
+    C148 52 162 64 172 58
+    C182 52 178 38 162 28
+    C142 14 112 18 100 42 Z"
+    fill="#3F2A1D" stroke="#1C120C" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M62 40 C74 34 88 38 100 46" stroke="#6B4423" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+  <path d="M138 40 C126 34 112 38 100 46" stroke="#6B4423" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+</svg>

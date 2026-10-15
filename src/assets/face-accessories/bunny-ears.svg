@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160" width="220" height="160" fill="none">
+  <!-- Left ear -->
+  <ellipse cx="58" cy="70" rx="28" ry="62" fill="#F8FAFC" stroke="#334155" stroke-width="3" transform="rotate(-18 58 70)"/>
+  <ellipse cx="58" cy="74" rx="14" ry="40" fill="#FDA4AF" stroke="none" transform="rotate(-18 58 74)" opacity="0.95"/>
+  <!-- Right ear -->
+  <ellipse cx="162" cy="70" rx="28" ry="62" fill="#F8FAFC" stroke="#334155" stroke-width="3" transform="rotate(18 162 70)"/>
+  <ellipse cx="162" cy="74" rx="14" ry="40" fill="#FDA4AF" stroke="none" transform="rotate(18 162 74)" opacity="0.95"/>
+  <!-- Tiny head band hint (transparent-ish connector) -->
+  <path d="M78 118 C100 108 120 108 142 118" stroke="#94A3B8" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="200" height="180" fill="none">
+  <!-- Soft comic Santa hat: red cone + white fur brim + pom-pom -->
+  <path d="M28 118 C40 52 78 18 118 12 C148 8 168 28 152 70 C140 102 118 118 100 128 Z" fill="#E11D2E" stroke="#7F1D1D" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M118 12 C148 8 168 28 152 70 C160 58 172 42 178 28 C170 18 148 8 118 12 Z" fill="#B91C1C" opacity="0.45"/>
+  <!-- Fur brim -->
+  <ellipse cx="100" cy="138" rx="78" ry="28" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2.5"/>
+  <ellipse cx="52" cy="132" rx="18" ry="14" fill="#FFFFFF"/>
+  <ellipse cx="100" cy="128" rx="22" ry="16" fill="#FFFFFF"/>
+  <ellipse cx="148" cy="132" rx="18" ry="14" fill="#FFFFFF"/>
+  <!-- Pom-pom -->
+  <circle cx="178" cy="24" r="16" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2.5"/>
+  <circle cx="172" cy="20" r="5" fill="#FFFFFF"/>
+</svg>
