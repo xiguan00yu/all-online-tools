@@ -20,7 +20,7 @@
 ## Project shape
 
 - React + TypeScript + Vite **MPA** (multiple HTML entries), not SPA.
-- Entries: `index.html` → `src/main.tsx`, `date.html` → `src/date-main.tsx`, `pdf.html` → `src/pdf-main.tsx`, `json.html` → `src/json-main.tsx`, `model.html` → `src/model-main.tsx`, `face.html` → `src/face-main.tsx`, `board.html` → `src/board-main.tsx`.
+- Entries: `index.html` → `src/main.tsx`, `date.html` → `src/date-main.tsx`, `pdf.html` → `src/pdf-main.tsx`, `json.html` → `src/json-main.tsx`, `model.html` → `src/model-main.tsx`, `face.html` → `src/face-main.tsx`, `board.html` → `src/board-main.tsx`, `ppt.html` → `src/ppt-main.tsx`.
 - `vite.config.ts` sets `base: '/all-online-tools/'` for GitHub Pages.
 - Keep the multi-entry Rollup `input` pattern when adding tools: new `*.html` + `src/*-main.tsx` + `src/pages/*`.
 - Tailwind CSS v4 via `@tailwindcss/vite` processes `@pxlkit/ui-kit/styles.css`.
@@ -30,6 +30,7 @@
 - Model tools use **three@0.160** (`GLTFLoader` + **OrbitControls**) under `src/components/model/`; local file picker for `.glb`/`.gltf` only (no upload). Prefer self-contained `.glb`.
 - Board tools use **@quickdrawjs/core** (`createQuickdraw` + `getSnapshot`/`loadSnapshot`) under `src/components/board/`; localStorage autosave + JSON/PNG import/export; local-only (no account/backend). Do **not** embed `@excalidraw/excalidraw`.
 - Face tools use **@mediapipe/tasks-vision** Face Landmarker under `src/components/face/`; camera via `getUserMedia` (front/`user`), browser-only overlay modes (bounding box / mesh) plus comic 2D face accessories (SVG under `src/assets/face-accessories/`). WASM + model from Google CDN; stop tracks on unmount.
+- PPT tools use **pptx-viewer** (`loadPresentation` + `renderSlideToElement`, fflate only) under `src/components/ppt/`; local `.pptx` picker only (legacy `.ppt` unsupported). Client-side SVG slide preview; no upload / Office Online.
 
 ## Date / time controls note
 

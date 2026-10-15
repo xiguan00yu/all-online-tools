@@ -19,10 +19,11 @@ export default defineConfig({
         model: resolve(rootDir, 'model.html'),
         face: resolve(rootDir, 'face.html'),
         board: resolve(rootDir, 'board.html'),
+        ppt: resolve(rootDir, 'ppt.html'),
       },
     },
   },
   optimizeDeps: {
-    include: ['pdfjs-dist', 'pdf-lib', 'pica', 'three', '@mediapipe/tasks-vision', '@quickdrawjs/core'],
+    include: ['pdfjs-dist', 'pdf-lib', 'pica', 'three', '@mediapipe/tasks-vision', '@quickdrawjs/core', 'pptx-viewer'],
   },
 })

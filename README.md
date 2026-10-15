@@ -97,4 +97,5 @@ git config user.email "xiguan00yu@users.noreply.github.com"
 - dayjs（日期工具页）
 - three@0.160（3D 模型页：GLTFLoader + OrbitControls）
 - @mediapipe/tasks-vision（人脸识别页：Face Landmarker + 摄像头叠加）
+- pptx-viewer（PPT 预览页：本地解析 .pptx → SVG 幻灯片）
 - `base: '/all-online-tools/'` 适配 GitHub Pages 项目站点

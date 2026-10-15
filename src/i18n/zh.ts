@@ -47,6 +47,10 @@ export const zh: MessageTree = {
         title: '白板',
         description: '轻量画板、自动保存',
       },
+      ppt: {
+        title: 'PPT 预览',
+        description: '本地打开演示文稿',
+      },
     },
   },
   date: {
@@ -260,7 +264,7 @@ export const zh: MessageTree = {
     accBunnyEars: '兔耳',
     idleHint: '点击「开启摄像头」开始实时识别',
   },
-board: {
+  board: {
     documentTitle: '白板 · All Online Tools',
     title: '白板',
     intro:
@@ -281,5 +285,29 @@ board: {
     statusEmptyPng: '画板为空，无法导出 PNG',
     statusInvalidJson: '不是有效的白板场景 JSON',
     statusParseFailed: 'JSON 解析失败',
+  },
+  ppt: {
+    documentTitle: 'PPT 预览 · All Online Tools',
+    title: 'PPT 预览',
+    introLead: '在浏览器本地预览 PowerPoint。打开',
+    introTail: '文件即可翻页查看。无需账号，文件不会上传。旧版 .ppt 暂不支持。',
+    viewer: '演示文稿预览',
+    open: '打开 PPTX',
+    prev: '← 上一页',
+    next: '下一页 →',
+    clear: '清除',
+    idle: '选择本地 .pptx 文件开始预览',
+    empty: '选择 .pptx 文件以预览幻灯片。手机也可左右翻页。',
+    loading: '正在解析 {{name}}…',
+    ready: '已加载 {{n}} 页 · {{name}} · {{size}}',
+    counter: '{{current}} / {{total}}',
+    badType: '请选择 .pptx 文件（Office Open XML）',
+    legacyOnly: '暂不支持旧版二进制 .ppt，请用 PowerPoint / LibreOffice 另存为 .pptx 后再打开',
+    emptySlides: '演示文稿没有幻灯片',
+    cannotLoad: '无法打开演示文稿：{{detail}}',
+    unknownError: '未知错误',
+    keyboardHint: '键盘 ← → / 空格 翻页',
+    fidelityNote:
+      '预览为近似渲染：复杂动画、音视频、部分 SmartArt / 3D 效果可能与 PowerPoint 不完全一致。',
   },
 }

@@ -47,6 +47,10 @@ export const en: MessageTree = {
         title: 'Whiteboard',
         description: 'Lightweight canvas with autosave',
       },
+      ppt: {
+        title: 'PPT Preview',
+        description: 'Open a local presentation',
+      },
     },
   },
   date: {
@@ -262,7 +266,7 @@ export const en: MessageTree = {
     accBunnyEars: 'Bunny ears',
     idleHint: 'Tap “Start camera” to begin live detection',
   },
-board: {
+  board: {
     documentTitle: 'Whiteboard · All Online Tools',
     title: 'Whiteboard',
     intro:
@@ -284,5 +288,30 @@ board: {
     statusEmptyPng: 'Board is empty — nothing to export as PNG',
     statusInvalidJson: 'Not a valid whiteboard scene JSON',
     statusParseFailed: 'JSON parse failed',
+  },
+  ppt: {
+    documentTitle: 'PPT Preview · All Online Tools',
+    title: 'PPT Preview',
+    introLead: 'Preview PowerPoint locally in the browser. Open a',
+    introTail: 'file to flip through slides. No account — nothing is uploaded. Legacy .ppt is not supported.',
+    viewer: 'Presentation preview',
+    open: 'Open PPTX',
+    prev: '← Prev',
+    next: 'Next →',
+    clear: 'Clear',
+    idle: 'Choose a local .pptx file to preview',
+    empty: 'Choose a .pptx file to preview slides. Works on phones too.',
+    loading: 'Parsing {{name}}…',
+    ready: 'Loaded {{n}} slides · {{name}} · {{size}}',
+    counter: '{{current}} / {{total}}',
+    badType: 'Please choose a .pptx file (Office Open XML)',
+    legacyOnly:
+      'Legacy binary .ppt is not supported. Re-save as .pptx in PowerPoint / LibreOffice, then open it here',
+    emptySlides: 'Presentation has no slides',
+    cannotLoad: 'Could not open presentation: {{detail}}',
+    unknownError: 'Unknown error',
+    keyboardHint: 'Keyboard ← → / Space to navigate',
+    fidelityNote:
+      'Approximate render: complex animations, audio/video, and some SmartArt / 3D effects may not match PowerPoint exactly.',
   },
 }
