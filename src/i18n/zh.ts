@@ -43,6 +43,10 @@ export const zh: MessageTree = {
         title: '人脸识别',
         description: '摄像头实时人脸框 / 点线 / 趣味配件',
       },
+      board: {
+        title: '白板',
+        description: '轻量画板、自动保存',
+      },
     },
   },
   date: {
@@ -255,5 +259,27 @@ export const zh: MessageTree = {
     accMustache: '小胡子',
     accBunnyEars: '兔耳',
     idleHint: '点击「开启摄像头」开始实时识别',
+  },
+board: {
+    documentTitle: '白板 · All Online Tools',
+    title: '白板',
+    intro:
+      '轻量无限画板：钢笔 / 形状 / 文字、平移缩放。场景自动保存到本机，支持导入导出 JSON，以及导出 PNG。无需账号，无后端。',
+    importJson: '导入 JSON',
+    exportJson: '导出 JSON',
+    exportPng: '导出 PNG',
+    clear: '清空画板',
+    clearConfirm: '确定清空画板？此操作可撤销（⌘Z / Ctrl+Z），但自动保存也会被覆盖为空场景。',
+    autosaveBadge: '自动保存 · 本机',
+    storageHint: 'localStorage · {{key}}',
+    statusRestored: '已从本机恢复场景',
+    statusSaved: '已自动保存',
+    statusCleared: '已清空画板',
+    statusImported: '已导入 JSON 场景',
+    statusExportedJson: '已下载 JSON 场景',
+    statusExportedPng: '已下载 PNG',
+    statusEmptyPng: '画板为空，无法导出 PNG',
+    statusInvalidJson: '不是有效的白板场景 JSON',
+    statusParseFailed: 'JSON 解析失败',
   },
 }

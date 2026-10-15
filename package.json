@@ -14,6 +14,7 @@
     "@pxlkit/gamification": "^1.2.5",
     "@pxlkit/ui": "^1.2.6",
     "@pxlkit/ui-kit": "^2.2.0",
+    "@quickdrawjs/core": "^0.3.0",
     "dayjs": "^1.11.13",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^3.11.174",

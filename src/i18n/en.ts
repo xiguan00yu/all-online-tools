@@ -43,6 +43,10 @@ export const en: MessageTree = {
         title: 'Face Detection',
         description: 'Live camera face box / mesh / accessories',
       },
+      board: {
+        title: 'Whiteboard',
+        description: 'Lightweight canvas with autosave',
+      },
     },
   },
   date: {
@@ -257,5 +261,28 @@ export const en: MessageTree = {
     accMustache: 'Mustache',
     accBunnyEars: 'Bunny ears',
     idleHint: 'Tap “Start camera” to begin live detection',
+  },
+board: {
+    documentTitle: 'Whiteboard · All Online Tools',
+    title: 'Whiteboard',
+    intro:
+      'Lightweight infinite canvas: pen / shapes / text, pan & zoom. Scene autosaves locally; import/export JSON and export PNG. No account, no backend.',
+    importJson: 'Import JSON',
+    exportJson: 'Export JSON',
+    exportPng: 'Export PNG',
+    clear: 'Clear board',
+    clearConfirm:
+      'Clear the board? You can undo (⌘Z / Ctrl+Z), but autosave will also overwrite with an empty scene.',
+    autosaveBadge: 'Autosave · local',
+    storageHint: 'localStorage · {{key}}',
+    statusRestored: 'Restored scene from this device',
+    statusSaved: 'Autosaved',
+    statusCleared: 'Board cleared',
+    statusImported: 'Imported JSON scene',
+    statusExportedJson: 'Downloaded JSON scene',
+    statusExportedPng: 'Downloaded PNG',
+    statusEmptyPng: 'Board is empty — nothing to export as PNG',
+    statusInvalidJson: 'Not a valid whiteboard scene JSON',
+    statusParseFailed: 'JSON parse failed',
   },
 }
