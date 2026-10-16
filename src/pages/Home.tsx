@@ -7,7 +7,7 @@ import {
   PixelSectionHeader,
 } from '@pxlkit/ui-kit'
 import { PxlKitIcon } from '@pxlkit/core'
-import { Calendar, Edit, Grid, List, Package, Pencil } from '@pxlkit/ui'
+import { Calendar, Edit, Grid, List, Package, Pencil, Robot } from '@pxlkit/ui'
 import { Target } from '@pxlkit/gamification'
 import { useI18n } from '../i18n'
 
@@ -60,6 +60,13 @@ const toolDefs = [
     ready: true,
     icon: Grid,
     iconColor: '#fb7185',
+  },
+  {
+    id: 'chat' as const,
+    href: './chat.html',
+    ready: true,
+    icon: Robot,
+    iconColor: '#a78bfa',
   },
 ]
 

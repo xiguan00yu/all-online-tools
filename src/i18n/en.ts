@@ -51,6 +51,10 @@ export const en: MessageTree = {
         title: 'PPT Preview',
         description: 'Open a local presentation',
       },
+      chat: {
+        title: 'Local AI Chat',
+        description: 'In-browser LLM (WebLLM / WebGPU)',
+      },
     },
   },
   date: {
@@ -314,4 +318,44 @@ export const en: MessageTree = {
     fidelityNote:
       'Approximate render: complex animations, audio/video, and some SmartArt / 3D effects may not match PowerPoint exactly.',
   },
+  chat: {
+    documentTitle: 'Local AI Chat · All Online Tools',
+    title: 'Local AI Chat',
+    intro:
+      'Run a large language model locally in the browser with WebLLM: pick a model, download to device cache, stream replies. No API key, no backend — chats stay on-device.',
+    webgpuRequired: 'WebGPU required',
+    webgpuMessage:
+      'This browser does not support WebGPU. Use a recent Chrome / Edge (desktop recommended) with WebGPU enabled.',
+    modelLabel: 'Model',
+    modelPlaceholder: 'Choose a model',
+    loadModel: 'Load model',
+    reloadModel: 'Reload',
+    loading: 'Loading…',
+    clear: 'Clear chat',
+    clearConfirm: 'Clear local chat history?',
+    loadConfirm:
+      'About to download and load “{{model}}” (approx. {{size}}). The first download can be large — check network and disk. The browser will cache it afterward. Continue?',
+    downloadProgress: 'Model download / init',
+    phaseIdle: 'Not loaded',
+    phaseLoading: 'Loading',
+    phaseReady: 'Ready',
+    phaseError: 'Error',
+    phaseUnsupported: 'No WebGPU',
+    loadedModel: 'Loaded · {{model}}',
+    sizeHint: 'First download ~{{size}}',
+    emptyIdle: 'Pick a model and tap “Load model”, then start chatting.',
+    emptyReady: 'Model ready. Type a message below to chat.',
+    roleUser: 'You',
+    roleAssistant: 'Assistant',
+    inputPlaceholder: 'Message… (Enter to send, Shift+Enter for newline)',
+    inputDisabled: 'Load a model before chatting',
+    send: 'Send',
+    stop: 'Stop',
+    stoppedEmpty: '(stopped)',
+    generateFailed: 'Generation failed: {{detail}}',
+    unknownError: 'Unknown error',
+    caveats:
+      'Needs WebGPU (Chrome recommended); first model download can be hundreds of MB–GB; desktop GPU works best — mobile may be slow or OOM. Fully local inference — no cloud proxy.',
+  },
+
 }

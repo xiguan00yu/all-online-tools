@@ -16,6 +16,9 @@
 - JSON 工具：`/all-online-tools/json.html`
 - 3D 模型：`/all-online-tools/model.html`
 - 人脸识别：`/all-online-tools/face.html`
+- 白板：`/all-online-tools/board.html`
+- PPT 预览：`/all-online-tools/ppt.html`
+- 本地 AI 聊天：`/all-online-tools/chat.html`
 
 站点 `base` 为 `/all-online-tools/`（GitHub Pages 项目站点）。
 
@@ -64,6 +67,9 @@ npm run preview
 | [JSON 工具](./json.html) | 格式化、校验、结构对比 |
 | [3D 模型](./model.html) | 打开本地 .glb/.gltf、OrbitControls 查看 |
 | [人脸识别](./face.html) | 摄像头实时人脸框 / 点线标记（MediaPipe） |
+| [白板](./board.html) | 轻量画板、自动保存（Quickdraw） |
+| [PPT 预览](./ppt.html) | 本地打开 .pptx 幻灯片预览 |
+| [本地 AI 聊天](./chat.html) | 浏览器本地大模型（WebLLM / WebGPU） |
 
 
 ## GitHub Pages 启用步骤
@@ -98,4 +104,5 @@ git config user.email "xiguan00yu@users.noreply.github.com"
 - three@0.160（3D 模型页：GLTFLoader + OrbitControls）
 - @mediapipe/tasks-vision（人脸识别页：Face Landmarker + 摄像头叠加）
 - pptx-viewer（PPT 预览页：本地解析 .pptx → SVG 幻灯片）
+- @mlc-ai/web-llm（本地 AI 聊天页：WebGPU 浏览器推理，无后端）
 - `base: '/all-online-tools/'` 适配 GitHub Pages 项目站点

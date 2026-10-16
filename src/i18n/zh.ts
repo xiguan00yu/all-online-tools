@@ -51,6 +51,10 @@ export const zh: MessageTree = {
         title: 'PPT 预览',
         description: '本地打开演示文稿',
       },
+      chat: {
+        title: '本地 AI 聊天',
+        description: '浏览器本地大模型（WebLLM / WebGPU）',
+      },
     },
   },
   date: {
@@ -310,4 +314,44 @@ export const zh: MessageTree = {
     fidelityNote:
       '预览为近似渲染：复杂动画、音视频、部分 SmartArt / 3D 效果可能与 PowerPoint 不完全一致。',
   },
+  chat: {
+    documentTitle: '本地 AI 聊天 · All Online Tools',
+    title: '本地 AI 聊天',
+    intro:
+      '基于 WebLLM 在浏览器本地运行大模型：选模型、下载到本机缓存、流式对话。无需 API Key，无后端，不会上传对话内容。',
+    webgpuRequired: '需要 WebGPU',
+    webgpuMessage:
+      '当前浏览器不支持 WebGPU。请使用较新的 Chrome / Edge（桌面推荐），并确保已启用 WebGPU。',
+    modelLabel: '模型',
+    modelPlaceholder: '选择模型',
+    loadModel: '加载模型',
+    reloadModel: '重新加载',
+    loading: '加载中…',
+    clear: '清空对话',
+    clearConfirm: '确定清空本地对话记录？',
+    loadConfirm:
+      '即将下载并加载「{{model}}」（约 {{size}}）。首次下载可能较大，请确认网络与磁盘空间；之后浏览器会缓存。继续？',
+    downloadProgress: '模型下载 / 初始化',
+    phaseIdle: '未加载',
+    phaseLoading: '加载中',
+    phaseReady: '就绪',
+    phaseError: '出错',
+    phaseUnsupported: '不支持 WebGPU',
+    loadedModel: '已加载 · {{model}}',
+    sizeHint: '首次下载约 {{size}}',
+    emptyIdle: '先选择模型并点击「加载模型」，然后开始聊天。',
+    emptyReady: '模型已就绪。在下方输入消息开始对话。',
+    roleUser: '你',
+    roleAssistant: '助手',
+    inputPlaceholder: '输入消息…（Enter 发送，Shift+Enter 换行）',
+    inputDisabled: '请先加载模型后再聊天',
+    send: '发送',
+    stop: '停止',
+    stoppedEmpty: '（已停止）',
+    generateFailed: '生成失败：{{detail}}',
+    unknownError: '未知错误',
+    caveats:
+      '注意：需要 WebGPU（推荐 Chrome）；首次模型下载可能数百 MB～数 GB；桌面 GPU 效果更好，手机可能很慢或 OOM。全部本地推理，无云端代理。',
+  },
+
 }

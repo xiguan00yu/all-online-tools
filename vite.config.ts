@@ -20,10 +20,11 @@ export default defineConfig({
         face: resolve(rootDir, 'face.html'),
         board: resolve(rootDir, 'board.html'),
         ppt: resolve(rootDir, 'ppt.html'),
+        chat: resolve(rootDir, 'chat.html'),
       },
     },
   },
   optimizeDeps: {
-    include: ['pdfjs-dist', 'pdf-lib', 'pica', 'three', '@mediapipe/tasks-vision', '@quickdrawjs/core', 'pptx-viewer'],
+    include: ['pdfjs-dist', 'pdf-lib', 'pica', 'three', '@mediapipe/tasks-vision', '@quickdrawjs/core', 'pptx-viewer', '@mlc-ai/web-llm'],
   },
 })
