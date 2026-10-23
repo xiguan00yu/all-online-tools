@@ -23,6 +23,16 @@
 
 站点 `base` 为 `/all-online-tools/`（GitHub Pages 项目站点）。
 
+## SEO
+
+静态 SEO 资源在 `public/`（构建时复制到 `dist` 根目录）：
+
+- `favicon.svg` / `apple-touch-icon.png` / `og.png`
+- `robots.txt`、`sitemap.xml`
+- 各 HTML 入口含 description、canonical、Open Graph、Twitter Card；首页另有 JSON-LD
+
+Sitemap 提交地址：https://xiguan00yu.github.io/all-online-tools/sitemap.xml
+
 ## UI 库（pxlkit）
 
 - 站点 / Docs：https://pxlkit.xyz/ · https://pxlkit.xyz/docs · https://pxlkit.xyz/ui-kit
