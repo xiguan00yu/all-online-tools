@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xiguan00yu.github.io/all-online-tools/sitemap.xml
