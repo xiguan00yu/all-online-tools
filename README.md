@@ -14,6 +14,7 @@
 - 日期工具：`/all-online-tools/date.html`
 - PDF 工具：`/all-online-tools/pdf.html`
 - JSON 工具：`/all-online-tools/json.html`
+- JSONL 工具：`/all-online-tools/jsonl.html`
 - 3D 模型：`/all-online-tools/model.html`
 - 人脸识别：`/all-online-tools/face.html`
 - 白板：`/all-online-tools/board.html`
@@ -65,6 +66,7 @@ npm run preview
 | [日期工具](./date.html) | 格式化、相对时间（fromNow/toNow）、日期差值 |
 | [PDF 工具](./pdf.html) | 预览、涂抹遮盖、导出 |
 | [JSON 工具](./json.html) | 格式化、校验、结构对比 |
+| [JSONL 工具](./jsonl.html) | 预览、折叠树、搜索、校验、表格、导出 |
 | [3D 模型](./model.html) | 打开本地 .glb/.gltf、OrbitControls 查看 |
 | [人脸识别](./face.html) | 摄像头实时人脸框 / 点线标记（MediaPipe） |
 | [白板](./board.html) | 轻量画板、自动保存（Quickdraw） |

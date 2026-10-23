@@ -21,6 +21,7 @@ export default defineConfig({
         board: resolve(rootDir, 'board.html'),
         ppt: resolve(rootDir, 'ppt.html'),
         chat: resolve(rootDir, 'chat.html'),
+        jsonl: resolve(rootDir, 'jsonl.html'),
       },
     },
   },

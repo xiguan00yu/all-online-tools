@@ -7,7 +7,7 @@ import {
   PixelSectionHeader,
 } from '@pxlkit/ui-kit'
 import { PxlKitIcon } from '@pxlkit/core'
-import { Calendar, Edit, Grid, List, Package, Pencil, Robot } from '@pxlkit/ui'
+import { Calendar, Edit, Grid, List, Package, Pencil, Robot, Search } from '@pxlkit/ui'
 import { Target } from '@pxlkit/gamification'
 import { useI18n } from '../i18n'
 
@@ -32,6 +32,13 @@ const toolDefs = [
     ready: true,
     icon: List,
     iconColor: '#a3e635',
+  },
+  {
+    id: 'jsonl' as const,
+    href: './jsonl.html',
+    ready: true,
+    icon: Search,
+    iconColor: '#34d399',
   },
   {
     id: 'model' as const,
